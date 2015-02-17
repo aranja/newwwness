@@ -8,12 +8,19 @@ html, body {
 }
 
 body {
-  box-sizing: border-box;
-  background-color: #F6F4F5;
-  font-family: 'Roboto', sans-serif;
   -webkit-font-smoothing: antialiased;
+  background-color: #F6F4F5;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Roboto', sans-serif;
   font-size: 14px;
   line-height: 1.5;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1; // for sticky footer
 }
 
 a {

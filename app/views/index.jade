@@ -9,12 +9,13 @@ html
     link(rel='stylesheet', href='http://fonts.googleapis.com/css?family=Roboto:500,100italic')
     link(rel='stylesheet', href='css/main.css')
   body
-    .Articles
-      each article in [0, 1, 2, 3]
-        .Article
-          - var image = "img/jcrew.jpg"
-          .Article-image(style="background-image: url(#{image})")
-          .Article-title Drunk J Crew
-          a.Article-link(href="http://drunkjcrew.tumblr.com" target="_blank") drunkjcrew.tumblr.com
+    main
+      .Articles
+        each article in [0, 1, 2, 3]
+          .Article
+            - var image = "img/jcrew.jpg"
+            .Article-image(style="background-image: url(#{image})")
+            .Article-title Drunk J Crew
+            a.Article-link(href="http://drunkjcrew.tumblr.com" target="_blank") drunkjcrew.tumblr.com
     footer
       .Logo
