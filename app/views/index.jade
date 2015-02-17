@@ -11,11 +11,11 @@ html
   body
     main
       .Articles
-        each article in [0, 1, 2, 3]
+        - var jcrew = {title: 'Drunk J Crew', image: 'img/jcrew.jpg', link:'http://drunkjcrew.tumblr.com'}
+        each article in [jcrew, jcrew, jcrew, jcrew]
           .Article
-            - var image = "img/jcrew.jpg"
-            .Article-image(style="background-image: url(#{image})")
-            .Article-title Drunk J Crew
-            a.Article-link(href="http://drunkjcrew.tumblr.com" target="_blank") drunkjcrew.tumblr.com
+            .Article-image(style="background-image: url(#{article.image})")
+            .Article-title= article.title
+            a.Article-link(href=article.link target="_blank")= article.link.split('//')[1]
     footer
       .Logo
