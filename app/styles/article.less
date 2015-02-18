@@ -1,10 +1,5 @@
 .Articles {
-  align-items: center;
   display: flex;
-  flex: 1;
-  height: 100vh;
-  justify-content: center;
-  margin: 0 auto;
 }
 
 .Article {
@@ -33,10 +28,16 @@
 
   &-image {
     background-position: 50% 50%;
-    background-size: cover;
+    background-size: 105%;
     height: 100%;
     position: relative;
     width: 100%;
+    transition: background 0.3s;
+  }
+
+  &:hover &-image {
+    background-size: 100%;
+    transition: background 0.3s;
   }
 
   &-image:after {
@@ -68,9 +69,10 @@
     margin: 0;
     padding: 0 0 .5rem 0;
     text-indent: 2rem;
-    line-height: 2.8;
+    line-height: 2.7;
     width: 100%;
     background-color: white;
+    transition: color .3s;
   }
 
   &-link:before, &-link:after {
@@ -94,7 +96,6 @@
     transform-origin: 0 100%;
     transform: skewX(-45deg);
   }
-
 }
 
 .Article {
