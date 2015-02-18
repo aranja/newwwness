@@ -1,5 +1,5 @@
 each article in results
-  .Article.Article--entrance
+  a.Article.Article--entrance(href=article.link target="_blank")
     .Article-image(style="background-image: url(#{article.image})")
     .Article-title= article.title
-    a.Article-link(href=article.link target="_blank")= article.link.split('//')[1]
+    .Article-link= article.link.split('//')[1]
