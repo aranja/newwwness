@@ -2,25 +2,27 @@ package newwwness
 
 import (
   "net/http"
-  "encoding/json"
+  "appengine"
+  "appengine/datastore"
 )
 
-func Sample(w http.ResponseWriter, r *http.Request) {
+func ArticleKey(c appengine.Context) *datastore.Key {
+  return datastore.NewIncompleteKey(c, "Article", nil)
+}
+
+func AddSample(w http.ResponseWriter, r *http.Request) {
   article := Article{
     Title: "Drunk J Crew",
     Image: "http://i.imgur.com/XKkITfW.jpg",
     Link: "http://drunkjcrew.tumblr.com"}
 
-  result := Result{
-    Count: 4,
-    Results: []Article{article, article, article, article}}
+  c := appengine.NewContext(r)
 
-  js, err := json.Marshal(result)
+  key, err := datastore.Put(c, ArticleKey(c), &article)
   if err != nil {
     http.Error(w, err.Error(), http.StatusInternalServerError)
     return
   }
 
-  w.Header().Set("Content-Type", "application/json")
-  w.Write(js)
+  SendJson(w, key)
 }

@@ -5,5 +5,6 @@ import (
 )
 
 func init() {
-  http.HandleFunc("/api/new", Sample)
+  http.HandleFunc("/api/new", NewArticles)
+  http.HandleFunc("/api/add", AddSample)
 }
