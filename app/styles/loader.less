@@ -2,17 +2,36 @@
   background-image: url(img/arrow.svg);
   background-position: 50% 50%;
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: 28px 28px;
   cursor: pointer;
-  height: 30px;
   margin-top: 55px;
   width: 100%;
-  transition: transform .3s;
+  position: relative;
+  padding: 2rem 0;
+}
+
+.Loader:after {
+  color: #8B898A;
+  content: "shuffle";
+  font-size: 12px;
+  font-weight: 100;
+  left: 0;
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  text-align: center;
+  text-transform: uppercase;
+  top: 48px;
+  transition: opacity .3s;
 }
 
 .Loader:hover {
-  transform: rotate(360deg);
-  transition: transform .5s;
+  transition: opacity .3s;
+}
+
+.Loader:hover:after {
+  opacity: 1;
+  transition: opacity .3s;
 }
 
 .is-loading {
