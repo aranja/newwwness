@@ -7,5 +7,6 @@ Loader.start()
 NewwwnessApi.load()
   .then(formatArticles)
   .then(Loader.stop())
+  .catch(err => console.log(err))
 
 export default {}

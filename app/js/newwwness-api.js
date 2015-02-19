@@ -2,11 +2,10 @@ import request from 'qwest'
 
 class NewwwnessApi {
   constructor() {
-    this.url = "http://newwwness-api.appspot.com/"
+    this.url = "/api/new"
   }
   load() {
     return request.get(this.url)
-      .then(data => JSON.parse(data))
   }
 }
 

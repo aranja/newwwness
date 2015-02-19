@@ -3,3 +3,4 @@ jspm_packages
 dev
 dist
 build_out
+api/public
