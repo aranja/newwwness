@@ -1,13 +1,21 @@
 .Loader {
+  cursor: pointer;
+  height: 32px;
+  margin: 55px auto 0 auto;
+  position: relative;
+  width: 100px;
+}
+
+.Loader:before {
+  content: '';
+  display: block;
+  width: 32px;
+  height: 32px;
   background-image: url(img/arrow.svg);
   background-position: 50% 50%;
   background-repeat: no-repeat;
   background-size: 28px 28px;
-  cursor: pointer;
-  margin-top: 55px;
-  width: 100%;
-  position: relative;
-  padding: 2rem 0;
+  margin: 0 auto;
 }
 
 .Loader:after {
@@ -21,7 +29,7 @@
   right: 0;
   text-align: center;
   text-transform: uppercase;
-  top: 48px;
+  top: 32px;
   transition: opacity .3s;
 }
 
@@ -34,7 +42,7 @@
   transition: opacity .3s;
 }
 
-.is-loading {
+.is-loading:before {
   animation: spin 1s infinite;
 }
 
