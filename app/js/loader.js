@@ -4,7 +4,7 @@ import formatArticles from './format-articles'
 class Loader {
   constructor() {
     this.el = document.getElementById('loader')
-    this.el.addEventListener('click', this.load.bind(this))
+    this.el.addEventListener('click', () => this.load.call(this, "random"))
   }
 
   start() {
@@ -15,12 +15,12 @@ class Loader {
     this.el.classList.remove('is-loading');
   }
 
-  load() {
-    this.el.classList.add('is-loading')
+  load(collection) {
+    this.start()
 
-    NewwwnessApi.random()
+    NewwwnessApi.load(collection)
       .then(formatArticles)
-      .then(() => this.el.classList.remove('is-loading'))
+      .then(() => this.stop())
       .catch(err => console.log(err))
   }
 }

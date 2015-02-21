@@ -2,16 +2,11 @@ import request from 'qwest'
 
 class NewwwnessApi {
   constructor() {
-    this.randomUrl = "/api/random"
-    this.newUrl = "/api/new"
+    this.urlBase = "/api/"
   }
 
-  new() {
-    return request.get(this.newUrl)
-  }
-
-  random() {
-    return request.get(this.randomUrl)
+  load(collection) {
+    return request.get(this.urlBase + collection)
   }
 }
 

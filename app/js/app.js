@@ -1,5 +1,5 @@
 import Loader from './loader'
 
-Loader.load()
+Loader.load("new")
 
 export default {}
