@@ -1,10 +1,10 @@
 package newwwness
 
 import (
-  "net/http"
+	"net/http"
 )
 
 func init() {
-  http.HandleFunc("/api/new", NewArticles)
-  http.HandleFunc("/api/add", AddSample)
+	http.HandleFunc("/api/random", RandomArticles)
+	http.HandleFunc("/api/new", NewArticles)
 }

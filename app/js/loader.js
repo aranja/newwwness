@@ -18,7 +18,7 @@ class Loader {
   load() {
     this.el.classList.add('is-loading')
 
-    NewwwnessApi.load()
+    NewwwnessApi.random()
       .then(formatArticles)
       .then(() => this.el.classList.remove('is-loading'))
       .catch(err => console.log(err))

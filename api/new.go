@@ -1,39 +1,25 @@
 package newwwness
 
 import (
-  "math/rand"
-  "net/http"
-  "appengine"
-  "appengine/datastore"
+	"appengine"
+	"appengine/datastore"
+	"net/http"
 )
 
 func NewArticles(w http.ResponseWriter, r *http.Request) {
-  c := appengine.NewContext(r)
-  q := datastore.NewQuery("Article").KeysOnly().Limit(100)
+	c := appengine.NewContext(r)
+	q := datastore.NewQuery("Article").Order("-Created").Limit(4)
 
-  keys, err := q.GetAll(c, []int{})
+	articles := make([]Article, 0, 4)
 
-  if err != nil {
-    http.Error(w, err.Error(), http.StatusInternalServerError)
-    return
-  }
+	if _, err := q.GetAll(c, &articles); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 
-  // Shuffle the keys
-  for i := range keys {
-    j := rand.Intn(i + 1)
-    keys[i], keys[j] = keys[j], keys[i]
-  }
+	result := Result{
+		Count:   len(articles),
+		Results: articles}
 
-  articles := make([]Article, 4)
-
-  if err := datastore.GetMulti(c, keys[:4], articles); err != nil {
-    http.Error(w, err.Error(), http.StatusInternalServerError)
-    return
-  }
-
-  result := Result{
-    Count: len(articles),
-    Results: articles}
-
-  SendJson(w, result)
+	SendJson(w, result)
 }
