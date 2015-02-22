@@ -1,12 +1,19 @@
+@import "responsive";
+
 @articleWidth: 260px;
 @articleHeight: 340px;
 @articleMargin: 32px;
 @numArticles: 4;
 
 .Articles {
+  -webkit-overflow-scrolling: touch;
   display: flex;
-  justify-content: center;
-  width: @numArticles * @articleWidth + (@numArticles - 1) * @articleMargin;
+  overflow-x: auto;
+  width: 100%;
+
+  @media @desktop {
+    justify-content: center;
+  }
 }
 
 .Article {
@@ -108,6 +115,7 @@
 
 .Article:nth-of-type(1) {
   animation-delay: 0.1s;
+  margin-left: @articleMargin;
 }
 
 .Article:nth-of-type(2) {
@@ -123,7 +131,7 @@
 }
 
 .Article:last-of-type {
-  margin-right: 0;
+  margin-right: @articleMargin;
 }
 
 @keyframes appear {
