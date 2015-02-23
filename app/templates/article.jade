@@ -2,4 +2,9 @@ each article in results
   a.Article.Article--entrance(href=article.link target="_blank")
     .Article-image(style="background-image: url(#{article.image})")
     .Article-title= article.title
-    .Article-link= article.link.split('//')[1].split('/')[0].replace('www.', '')
+    .Article-footer
+      .Article-footerLink
+        .Article-footerBorderLeft
+        .Article-footerBorderRight
+        .Article-footerText= article.link.split('//')[1].split('/')[0].replace('www.', '')
+        .Article-background
