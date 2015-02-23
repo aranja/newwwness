@@ -210,12 +210,12 @@
 
   &:hover &-background::before {
     transition: @linkSpeedRatio * @linkDelay transform (@linkDelay + @linkDelay) linear;
-    transform: translate3d(-@linkHeight - 1px, 0, 0) skewX(45deg);
+    transform: translate3d(-@linkHeight - 3.5px, 0, 0) skewX(45deg);
   }
 
   &:hover &-background::after {
     transition: @linkSpeedRatio * @linkDelay transform (@linkDelay + @linkDelay) linear;
-    transform: translate3d(@linkHeight + 1px, 0, 0) skewX(-45deg);
+    transform: translate3d(@linkHeight + 3.5px, 0, 0) skewX(-45deg);
   }
 }
 
