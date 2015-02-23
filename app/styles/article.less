@@ -83,13 +83,13 @@
     margin: 0 2rem;
     position: relative;
     padding: 1rem 0;
-    transition: .2s color (@linkDelay / 3);
+    transition: .2s color;
     z-index: 1;
   }
 
   &:hover &-footerText {
     color: #319FEB;
-    transition: .2s color (@linkDelay + @linkDelay / 3);
+    transition: .2s color (7.5 * @linkDelay / 5);
   }
 
   &-footerBorderRight,
