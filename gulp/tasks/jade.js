@@ -1,6 +1,6 @@
 module.exports = function(gulp, gutil) {
   var jade = require('gulp-jade');
-  var connect = require('gulp-connect');
+  var livereload = require('gulp-livereload');
   var prod = gutil.env.prod;
 
   gulp.task('jade', function() {
@@ -12,6 +12,6 @@ module.exports = function(gulp, gutil) {
         }
       }))
       .pipe(gulp.dest(gulp.config.target))
-      .pipe(prod ? gutil.noop() : connect.reload());
+      .pipe(prod ? gutil.noop() : livereload());
   });
 };
