@@ -1,5 +1,5 @@
 System.config({
-  "transpiler": "6to5",
+  "transpiler": "babel",
   "paths": {
     "*": "*.js",
     "Aranja.com/*": "js/*.js",
