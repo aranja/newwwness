@@ -6,7 +6,10 @@
 .Articles {
   display: flex;
   justify-content: center;
-  width: @numArticles * @articleWidth + (@numArticles - 1) * @articleMargin;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  margin: auto;
 }
 
 .Article {
@@ -14,10 +17,10 @@
   animation-fill-mode: forwards;
   animation-name: appear;
   flex: 0 0 @articleWidth;
-  height: @articleHeight;
-  margin: 0 @articleMargin @articleMargin 0;
+  margin: 0 0 @articleMargin @articleMargin;
   opacity: 0;
   position: relative;
+  height: @articleHeight;
 
   &-content {
     padding: 1rem;
@@ -35,12 +38,14 @@
   }
 
   &-image {
-    background-position: 50% 50%;
+    background-position: 50% 0%;
     background-size: 105%;
-    height: 100%;
-    position: relative;
-    width: 100%;
+    position: absolute;
     transition: background 0.2s;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
   }
 
   &:hover &-image {
@@ -123,7 +128,7 @@
 }
 
 .Article:last-of-type {
-  margin-right: 0;
+  margin-right: @articleMargin;
 }
 
 @keyframes appear {
