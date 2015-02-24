@@ -60,8 +60,8 @@
 
   @linkDegree: 45deg;
   @linkHeight: 11px;
-  @linkOpositeSide: tan(90 - @linkDegree) * @linkHeight - 4px;
-  @linkAdjacentSide: cos(90 - @linkDegree) * @linkHeight - 1px;
+  @linkOpositeSide: ceil(tan(90 - @linkDegree) * @linkHeight - 4px);
+  @linkAdjacentSide: ceil(cos(90 - @linkDegree) * @linkHeight - 1px);
   @linkDelay: .3s;
   @linkSpeedRatio: @linkHeight / 42px; // Usual height of footer...magic.
 
@@ -117,13 +117,14 @@
     &::after {
       background: #fff;
       content: '';
-      height: @linkHeight;
-      margin-left: -1px;
+      height: @linkHeight + 1px;
+      margin-left: -2px;
       position: absolute;
       left: 100%;
+      top: 0;
       transition: transform @linkDelay;
       transform-origin: 0 0;
-      transform: translate3d(-@linkAdjacentSide, -@linkOpositeSide, 0) rotateZ(-@linkDegree);
+      transform: translate3d(-@linkAdjacentSide, -@linkOpositeSide - 1px, 0) rotateZ(-@linkDegree);
       width: 1px;
     }
   }
@@ -137,6 +138,7 @@
     }
 
     &::after {
+      height: @linkHeight;
       margin-left: auto;
       margin-right: -1px;
       left: auto;
@@ -210,12 +212,12 @@
 
   &:hover &-background::before {
     transition: @linkSpeedRatio * @linkDelay transform (@linkDelay + @linkDelay) linear;
-    transform: translate3d(-@linkHeight - 3.5px, 0, 0) skewX(45deg);
+    transform: translate3d(-@linkHeight - 4px, 0, 0) skewX(45deg);
   }
 
   &:hover &-background::after {
     transition: @linkSpeedRatio * @linkDelay transform (@linkDelay + @linkDelay) linear;
-    transform: translate3d(@linkHeight + 3.5px, 0, 0) skewX(-45deg);
+    transform: translate3d(@linkHeight + 4px, 0, 0) skewX(-45deg);
   }
 }
 
