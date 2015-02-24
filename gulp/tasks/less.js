@@ -12,7 +12,8 @@ module.exports = function(gulp, gutil) {
           gulp.config.source + '/styles'
         ],
         rootpath: '../',
-        relativeUrls: true
+        relativeUrls: true,
+        strictMath: true
       }))
       .pipe(!prod ? gutil.noop() : csso())
       .pipe(autoprefixer({
