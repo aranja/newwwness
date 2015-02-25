@@ -65,7 +65,7 @@
   }
 
   &-footer {
-    bottom: 0;
+    bottom: -1px; // Fix for weird safari rendering bug...
     left: 0;
     position: absolute;
     right: 0;
@@ -148,7 +148,7 @@
     bottom: 0;
     position: absolute;
     top: @opp-Article;
-    transition: transform @delay-Article linear;
+    transition: @delay-Article transform (@speedRatio-Article * @delay-Article) linear;
     transform: translate3d(0, 100%, 0);
     width: 100%;
   }
