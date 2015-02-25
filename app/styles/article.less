@@ -63,7 +63,7 @@
   @linkPadding: 6px;
   @linkOpositeSide: ceil((tan(@linkDegree) * @linkHeight - @linkPadding));
   @linkAdjacentSide: ceil((cos(@linkDegree) * @linkHeight));
-  @linkDelay: .3s;
+  @linkDelay: .2s;
   @linkSpeedRatio: (@linkHeight / 42px); // Usual height of footer...magic.
 
   &-footer {
@@ -179,7 +179,7 @@
     bottom: 0;
     position: absolute;
     top: @linkOpositeSide;
-    transition: transform @linkDelay;
+    transition: transform @linkDelay linear;
     transform: translate3d(0, 100%, 0);
     width: 100%;
   }
