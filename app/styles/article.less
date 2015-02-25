@@ -1,7 +1,13 @@
-@articleWidth: 260px;
-@articleHeight: 340px;
-@articleMargin: 32px;
-@numArticles: 4;
+@width-Article: 260px;
+@height-Article: 340px;
+@margin-Article: 32px;
+@degree-Article: 45deg;
+@hyp-Article: 16px;
+@linkPadding: 6px;
+@opp-Article: ceil((tan(@degree-Article) * @hyp-Article - @linkPadding));
+@adj-Article: ceil((cos(@degree-Article) * @hyp-Article));
+@delay-Article: .2s;
+@speedRatio-Article: (@hyp-Article / 42px); // Usual height of footer...magic.
 
 .Articles {
   display: flex;
@@ -16,11 +22,11 @@
   animation-duration: .5s;
   animation-fill-mode: forwards;
   animation-name: appear;
-  flex: 0 0 @articleWidth;
-  margin: 0 0 @articleMargin @articleMargin;
+  flex: 0 0 @width-Article;
+  margin: 0 0 @margin-Article @margin-Article;
   opacity: 0;
   position: relative;
-  height: @articleHeight;
+  height: @height-Article;
 
   &-content {
     padding: 1rem;
@@ -58,14 +64,6 @@
     top: 0;
   }
 
-  @linkDegree: 45deg;
-  @linkHeight: 16px;
-  @linkPadding: 6px;
-  @linkOpositeSide: ceil((tan(@linkDegree) * @linkHeight - @linkPadding));
-  @linkAdjacentSide: ceil((cos(@linkDegree) * @linkHeight));
-  @linkDelay: .2s;
-  @linkSpeedRatio: (@linkHeight / 42px); // Usual height of footer...magic.
-
   &-footer {
     bottom: 0;
     left: 0;
@@ -88,11 +86,6 @@
     z-index: 1;
   }
 
-  &:hover &-footerText {
-    color: #319FEB;
-    transition: .2s color (7.5 * @linkDelay / 5);
-  }
-
   &-footerBorderRight,
   &-footerBorderLeft {
     background: #fff;
@@ -100,7 +93,7 @@
     height: 1px;
     left: 32px;
     position: absolute;
-    transition: transform @linkDelay;
+    transition: transform @delay-Article;
     transform: translate3d(0, 0, 0);
     top: 0;
     right: calc(50% - 4px);
@@ -119,10 +112,10 @@
     &::after {
       background-color: #fff;
       content: '';
-      height: @linkHeight;
+      height: @hyp-Article;
       position: absolute;
       top: 0;
-      transition: transform @linkDelay;
+      transition: transform @delay-Article;
       transform-origin: 0 0;
       width: 1px;
     }
@@ -131,14 +124,14 @@
   &-footerBorderLeft::after {
     left: 100%;
     margin-left: -1px;
-    transform: translate3d(-@linkAdjacentSide, -@linkAdjacentSide, 0) rotateZ(-@linkDegree);
+    transform: translate3d(-@adj-Article, -@adj-Article, 0) rotateZ(-@degree-Article);
   }
 
   &-footerBorderRight::after {
-    height: (@linkHeight - 2px);
+    height: (@hyp-Article - 2px);
     margin-right: -1px;
     right: 100%;
-    transform: translate3d(@linkAdjacentSide, -@linkAdjacentSide, 0) rotateZ(@linkDegree);
+    transform: translate3d(@adj-Article, -@adj-Article, 0) rotateZ(@degree-Article);
   }
 
   &-footerBorderRight {
@@ -150,43 +143,14 @@
     }
   }
 
-  &:hover &-footerBorderLeft {
-    transform: translate3d(-@linkAdjacentSide, 0, 0);
-  }
-
-  &:hover &-footerBorderRight {
-    transform: translate3d(@linkAdjacentSide, 0, 0);
-  }
-
-  &:hover &-footerBorderLeft::before {
-    transform: translate3d((@linkAdjacentSide - 32px), 0, 0);
-  }
-
-  &:hover &-footerBorderRight::before {
-    transform: translate3d((32px - @linkAdjacentSide), 0, 0);
-  }
-
-  &:hover &-footerBorderLeft::after {
-    transform: translate3d(0, 0, 0) rotateZ(-@linkDegree);
-  }
-
-  &:hover &-footerBorderRight::after {
-    transform: translate3d(0, 0, 0) rotateZ(@linkDegree);
-  }
-
   &-background {
     background: #fff;
     bottom: 0;
     position: absolute;
-    top: @linkOpositeSide;
-    transition: transform @linkDelay linear;
+    top: @opp-Article;
+    transition: transform @delay-Article linear;
     transform: translate3d(0, 100%, 0);
     width: 100%;
-  }
-
-  &:hover &-background {
-    transform: translate3d(0, 0, 0);
-    transition: @linkDelay transform @linkDelay linear;
   }
 
   &-background::before,
@@ -194,36 +158,85 @@
     background: #fff;
     bottom: 100%;
     content: '';
-    height: @linkOpositeSide;
+    height: @opp-Article;
     position: absolute;
-    transition: (@linkSpeedRatio * @linkDelay) transform linear;
-    width: calc(50% + (@linkAdjacentSide));
+    transition: (@speedRatio-Article * @delay-Article) transform linear;
+    width: calc(50% + (@adj-Article));
   }
 
   &-background::before {
-    left: -@linkAdjacentSide;
+    left: -@adj-Article;
     transform-origin: 100% 0;
-    transform: translate3d(0, 100%, 0) skewX(@linkDegree);
+    transform: translate3d(0, 100%, 0) skewX(@degree-Article);
 
   }
 
   &-background::after {
-    right: -@linkAdjacentSide;
+    right: -@adj-Article;
     transform-origin: 0 0;
-    transform: translate3d(0, 100%, 0) skewX(-@linkDegree);
-  }
-
-  &:hover &-background::before {
-    transition: (@linkSpeedRatio * @linkDelay) transform (2 * @linkDelay) linear;
-    transform: translate3d((@linkPadding - @linkAdjacentSide - 1px), 0, 0) skewX(@linkDegree);
-  }
-
-  &:hover &-background::after {
-    transition: (@linkSpeedRatio * @linkDelay) transform (2 * @linkDelay) linear;
-    transform: translate3d(@linkAdjacentSide, 0, 0) skewX(-@linkDegree);
+    transform: translate3d(0, 100%, 0) skewX(-@degree-Article);
   }
 }
 
+/**
+ * Triggers
+ * Hover, Focus, Active, etc.
+ */
+.Article:hover,
+.Article:focus {
+  outline: 0;
+
+  // Text
+  .Article-footerText {
+    color: #319FEB;
+    transition: .2s color (7.5 * @delay-Article / 5);
+  }
+
+  // Border + Arrow
+  .Article-footerBorderLeft {
+    transform: translate3d(-@adj-Article, 0, 0);
+  }
+
+  .Article-footerBorderRight {
+    transform: translate3d(@adj-Article, 0, 0);
+  }
+
+  .Article-footerBorderLeft::before {
+    transform: translate3d((@adj-Article - 32px), 0, 0);
+  }
+
+  .Article-footerBorderRight::before {
+    transform: translate3d((32px - @adj-Article), 0, 0);
+  }
+
+  .Article-footerBorderLeft::after {
+    transform: translate3d(0, 0, 0) rotateZ(-@degree-Article);
+  }
+
+  .Article-footerBorderRight::after {
+    transform: translate3d(0, 0, 0) rotateZ(@degree-Article);
+  }
+
+  // Background
+  .Article-background {
+    transform: translate3d(0, 0, 0);
+    transition: @delay-Article transform @delay-Article linear;
+  }
+
+  .Article-background::before {
+    transition: (@speedRatio-Article * @delay-Article) transform (2 * @delay-Article) linear;
+    transform: translate3d((@linkPadding - @adj-Article - 1px), 0, 0) skewX(@degree-Article);
+  }
+
+  .Article-background::after {
+    transition: (@speedRatio-Article * @delay-Article) transform (2 * @delay-Article) linear;
+    transform: translate3d(@adj-Article, 0, 0) skewX(-@degree-Article);
+  }
+}
+
+/**
+ * Animations
+ */
 .Article:nth-of-type(1) {
   animation-delay: 0.1s;
 }
@@ -241,7 +254,7 @@
 }
 
 .Article:last-of-type {
-  margin-right: @articleMargin;
+  margin-right: @margin-Article;
 }
 
 @keyframes appear {
