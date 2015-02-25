@@ -112,6 +112,7 @@
       position: absolute;
       top: 0;
       transition: transform .8s;
+      transform: translateZ(0);
       width: 32px;
     }
 
@@ -150,27 +151,27 @@
   }
 
   &:hover &-footerBorderLeft {
-    transform: translateX(-@linkAdjacentSide);
+    transform: translate3d(-@linkAdjacentSide, 0, 0);
   }
 
   &:hover &-footerBorderRight {
-    transform: translateX(@linkAdjacentSide);
+    transform: translate3d(@linkAdjacentSide, 0, 0);
   }
 
   &:hover &-footerBorderLeft::before {
-    transform: translateX((@linkAdjacentSide - 32px));
+    transform: translate3d((@linkAdjacentSide - 32px), 0, 0);
   }
 
   &:hover &-footerBorderRight::before {
-    transform: translateX((32px - @linkAdjacentSide));
+    transform: translate3d((32px - @linkAdjacentSide), 0, 0);
   }
 
   &:hover &-footerBorderLeft::after {
-    transform: translateY(0) rotateZ(-@linkDegree);
+    transform: translate3d(0, 0, 0) rotateZ(-@linkDegree);
   }
 
   &:hover &-footerBorderRight::after {
-    transform: translateY(0) rotateZ(@linkDegree);
+    transform: translate3d(0, 0, 0) rotateZ(@linkDegree);
   }
 
   &-background {
