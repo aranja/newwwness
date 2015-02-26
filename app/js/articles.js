@@ -62,7 +62,7 @@ class Articles {
         this.el.innerHTML += div.innerHTML
       }
 
-      resolve(div.querySelector('img'))
+      resolve(post.image)
     })
   }
 }

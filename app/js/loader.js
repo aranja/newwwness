@@ -16,6 +16,8 @@ class Loader {
   }
 
   stop() {
+    Articles.isLoaded()
+    this.hasBeenFilled = true
     this.el.classList.remove('is-loading')
   }
 
@@ -37,8 +39,10 @@ class Loader {
   loadPost(post, i) {
     this.images.push(new Promise((resolve, reject) => {
       Articles.renderPost(post, this.hasBeenFilled ? Articles.get(i) : null)
-      .then(img => {
-        img.onload = () => {resolve()}
+      .then(src => {
+        let image = new Image()
+        image.addEventListener('load', () => resolve())
+        image.src = src
       }, this.errorHandler)
     }))
 
@@ -46,11 +50,7 @@ class Loader {
   }
 
   waitForImages() {
-    return Promise.all(this.images).then(() => {
-      Articles.isLoaded()
-      this.stop()
-      this.hasBeenFilled = true
-    })
+    return Promise.all(this.images).then(() => this.stop())
   }
 
   load(collection) {
