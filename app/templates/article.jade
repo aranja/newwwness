@@ -1,10 +1,12 @@
 - linkText = 
 a.Article.Article--entrance(href=post.link.url target="_blank")
-  img.Article-image(alt="Image for #{post.title}" src="#{post.image}")
-  .Article-title= post.title
-  .Article-footer
-    .Article-footerLink
-      .Article-footerBorderLeft
-      .Article-footerBorderRight
-      .Article-footerText= post.link.text
-      .Article-background
+  .Article-new
+  .Article-current
+    img.Article-image(alt="Image for #{post.title}" src="#{post.image}")
+    .Article-title= post.title
+    .Article-footer
+      .Article-footerLink
+        .Article-footerBorderLeft
+        .Article-footerBorderRight
+        .Article-footerText= post.link.text
+        .Article-background

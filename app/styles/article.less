@@ -53,6 +53,10 @@
     top: 0;
   }
 
+  &-new {
+    opacity: 0;
+  }
+
   &-footer {
     bottom: -1px; // Fix for weird safari rendering bug...
     left: 0;
@@ -232,8 +236,46 @@
   animation-name: appear;
 }
 
-.is-loaded .Article--swap {
+.Article--swap {
   opacity: 1;
+
+  .Article-current {
+    transition: opacity .3s;
+  }
+
+  .Article-title {
+    transform: translate3d(0, 0, 0);
+  }
+
+  .Article-footer {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.Article--swap.is-hidden {
+  .Article-current {
+    opacity: 0;
+  }
+
+  .Article-title {
+    transform: translate3d(0, -100%, 0);
+  }
+
+  .Article-footer {
+    transform: translate3d(0, 100%, 0);
+  }
+}
+
+.Article--swap.is-visible {
+  .Article-title {
+    transition: transform .2s;
+    transform: translate3d(0, 0, 0);
+  }
+
+  .Article-footer {
+    transition: transform .2s;
+    transform: translate3d(0, 0, 0);
+  }
 }
 
 .Article:nth-of-type(1) {

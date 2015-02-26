@@ -16,7 +16,6 @@ class Loader {
   }
 
   stop() {
-    console.log('stopped');
     this.el.classList.remove('is-loading')
   }
 
@@ -39,7 +38,6 @@ class Loader {
     this.images.push(new Promise((resolve, reject) => {
       Articles.renderPost(post, this.hasBeenFilled ? Articles.get(i) : null)
       .then(img => {
-        console.log('loaded');
         img.onload = () => {resolve()}
       }, this.errorHandler)
     }))
@@ -56,6 +54,7 @@ class Loader {
   }
 
   load(collection) {
+    Articles.isNotLoaded()
     this.start()
     this.loadData(collection).then(() => this.waitForImages())
   }
