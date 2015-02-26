@@ -1,6 +1,9 @@
 package newwwness
 
-type Result struct {
-  Count int `json:"count"`
-  Results []Article `json:"results"`
+type ArticlesResult struct {
+	Articles []Article `json:"articles"`
+}
+
+type ArticleResult struct {
+	Article *Article `json:"article"`
 }

@@ -1,17 +1,24 @@
 package newwwness
 
 import (
-  "net/http"
-  "encoding/json"
+	"encoding/json"
+	"net/http"
 )
 
-func SendJson(w http.ResponseWriter, v interface{}) {
-  json, err := json.Marshal(v)
-  if err != nil {
-    http.Error(w, err.Error(), http.StatusInternalServerError)
-    return
-  }
+func SendJson(w http.ResponseWriter, v interface{}) error {
+	return json.NewEncoder(w).Encode(v)
+}
 
-  w.Header().Set("Content-Type", "application/json")
-  w.Write(json)
+func SendArticles(w http.ResponseWriter, articles []Article) {
+	result := ArticlesResult{
+		Articles: articles}
+
+	SendJson(w, result)
+}
+
+func SendArticle(w http.ResponseWriter, article *Article) {
+	result := ArticleResult{
+		Article: article}
+
+	SendJson(w, result)
 }

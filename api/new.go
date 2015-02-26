@@ -6,20 +6,31 @@ import (
 	"net/http"
 )
 
+func getNewArticles(c appengine.Context) ([]Article, error) {
+	articles := []Article{}
+
+	keys, err := datastore.NewQuery("Article").Order("-Created").Limit(4).GetAll(c, &articles)
+
+	if err != nil {
+		return nil, err
+	}
+
+	for i := 0; i < len(articles); i++ {
+		articles[i].Id = keys[i].IntID()
+	}
+
+	return articles, nil
+}
+
 func NewArticles(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
-	q := datastore.NewQuery("Article").Order("-Created").Limit(4)
 
-	articles := make([]Article, 0, 4)
+	articles, err := getNewArticles(c)
 
-	if _, err := q.GetAll(c, &articles); err != nil {
+	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	result := Result{
-		Count:   len(articles),
-		Results: articles}
-
-	SendJson(w, result)
+	SendArticles(w, articles)
 }
