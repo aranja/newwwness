@@ -1,11 +1,10 @@
-each article in results
-  - linkText = article.link.split('//')[1].split('/')[0].replace('www.', '')
-  a.Article.Article--entrance(href=article.link target="_blank")
-    .Article-image(style="background-image: url(#{article.image})")
-    .Article-title= article.title
-    .Article-footer
-      .Article-footerLink
-        .Article-footerBorderLeft
-        .Article-footerBorderRight
-        .Article-footerText= linkText
-        .Article-background
+- linkText = 
+a.Article.Article--entrance(href=post.link.url target="_blank")
+  img.Article-image(alt="Image for #{post.title}" src="#{post.image}")
+  .Article-title= post.title
+  .Article-footer
+    .Article-footerLink
+      .Article-footerBorderLeft
+      .Article-footerBorderRight
+      .Article-footerText= post.link.text
+      .Article-background
