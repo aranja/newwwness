@@ -12,7 +12,8 @@ module.exports = function(gulp, gutil) {
           'index.html',
           'favicon.png',
           'CNAME',
-          'manifest.json'
+          'manifest.json',
+          'background.js'
         ],
         quiet: true
       }))
