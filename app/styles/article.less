@@ -6,7 +6,7 @@
 @linkPadding: 6px;
 @opp-Article: ceil((tan(@degree-Article) * @hyp-Article - @linkPadding));
 @adj-Article: ceil((cos(@degree-Article) * @hyp-Article));
-@delay-Article: .2s;
+@delay-Article: .15s;
 @speedRatio-Article: (@hyp-Article / 42px); // Usual height of footer...magic.
 
 .Articles {
@@ -22,10 +22,10 @@
   background: #000;
   flex: 0 0 @width-Article;
   margin: 0 0 @margin-Article @margin-Article;
-  opacity: 0;
   overflow: hidden;
   position: relative;
   height: @height-Article;
+  transition: .3s opacity .3s;
 
   &-content {
     padding: 1rem;
@@ -50,7 +50,6 @@
     pointer-events: none;
     right: 0;
     transform: translate3d(-50%, 0, 0);
-    transition: opacity 0.2s;
     top: 0;
   }
 
@@ -176,10 +175,7 @@
  * Triggers
  * Hover, Focus, Active, etc.
  */
-.Article:hover,
-.Article:focus {
-  outline: 0;
-
+.Article:hover  {
   // Text
   .Article-footerText {
     color: #319FEB;
@@ -231,51 +227,81 @@
 /**
  * Animations
  */
+.Article--entrance {
+  opacity: 0;
+}
+
 .is-loaded .Article--entrance {
   animation-duration: .5s;
   animation-fill-mode: forwards;
   animation-name: appear;
 }
 
-.Article--swap {
-  opacity: 1;
-
+.Article.is-swapping {
   .Article-current {
+    opacity: 0;
+    transition: opacity .4s;
+  }
+
+  &:nth-of-type(1) .Article-title,
+  &:nth-of-type(1) .Article-footer,
+  &:nth-of-type(1) .Article-current {
+    transition-delay: 0.1s;
+  }
+
+  &:nth-of-type(2) .Article-title,
+  &:nth-of-type(2) .Article-footer,
+  &:nth-of-type(2) .Article-current {
+    transition-delay: 0.2s;
+  }
+
+  &:nth-of-type(3) .Article-title,
+  &:nth-of-type(3) .Article-footer,
+  &:nth-of-type(3) .Article-current {
+    transition-delay: 0.3s;
+  }
+
+  &:nth-of-type(4) .Article-title,
+  &:nth-of-type(4) .Article-footer,
+  &:nth-of-type(4) .Article-current {
+    transition-delay: 0.4s;
+  }
+}
+
+.Article.is-doneSwapping {
+  .Article-current {
+    opacity: 1;    
     transition: opacity .3s;
   }
 
-  .Article-title {
-    transform: translate3d(0, 0, 0);
-  }
-
+  .Article-title,
   .Article-footer {
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-.Article--swap.is-hidden {
-  .Article-current {
-    opacity: 0;
+    transition:  transform .4s;
   }
 
   .Article-title {
-    transform: translate3d(0, -100%, 0);
+    margin-top: -50px;
+    transform: translate3d(0, 50px, 0);
   }
 
   .Article-footer {
-    transform: translate3d(0, 100%, 0);
-  }
-}
-
-.Article--swap.is-visible {
-  .Article-title {
-    transition: transform .2s;
-    transform: translate3d(0, 0, 0);
+    margin-bottom: -50px;
+    transform: translate3d(0, -50px, 0);
   }
 
-  .Article-footer {
-    transition: transform .2s;
-    transform: translate3d(0, 0, 0);
+  &:nth-of-type(2) .Article-title,
+  &:nth-of-type(2) .Article-footer {
+    transition-delay: 0.1s;
+  }
+
+  &:nth-of-type(3) .Article-title,
+  &:nth-of-type(3) .Article-footer {
+    transition-delay: 0.2s;
+  }
+
+  &:nth-of-type(4) .Article-title,
+  &:nth-of-type(4) .Article-footer {
+    transition-delay: 0.3s;
   }
 }
 
