@@ -50,7 +50,7 @@
     },
     "configFile": "app/js/config.js",
     "dependencies": {
-      "jade": "^0.4.0",
+      "jade": "github:johnsoftek/plugin-jade@^0.4.0",
       "qwest": "npm:qwest@^1.5.4"
     }
   }
