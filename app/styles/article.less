@@ -8,6 +8,7 @@
 @adj-Article: ceil((cos(@degree-Article) * @hyp-Article));
 @delay-Article: .15s;
 @speedRatio-Article: (@hyp-Article / 42px); // Usual height of footer...magic.
+@shuffleSpeed: .9s;
 
 .Articles {
   display: flex;
@@ -25,14 +26,13 @@
   overflow: hidden;
   position: relative;
   height: @height-Article;
-  transition: .3s opacity .3s;
 
   &-content {
     padding: 1rem;
   }
 
   &-title {
-    color: white;
+    color: #fff;
     font-size: 2.5rem;
     font-style: italic;
     font-weight: 100;
@@ -55,6 +55,7 @@
 
   &-new {
     opacity: 0;
+    visibility: hidden;
   }
 
   &-footer {
@@ -240,43 +241,37 @@
 .Article.is-swapping {
   .Article-current {
     opacity: 0;
-    transition: opacity .4s;
-  }
-
-  &:nth-of-type(1) .Article-title,
-  &:nth-of-type(1) .Article-footer,
-  &:nth-of-type(1) .Article-current {
-    transition-delay: 0.1s;
+    transition: (@shuffleSpeed / 2) opacity 0s;
   }
 
   &:nth-of-type(2) .Article-title,
   &:nth-of-type(2) .Article-footer,
   &:nth-of-type(2) .Article-current {
-    transition-delay: 0.2s;
+    transition-delay: .1s;
   }
 
   &:nth-of-type(3) .Article-title,
   &:nth-of-type(3) .Article-footer,
   &:nth-of-type(3) .Article-current {
-    transition-delay: 0.3s;
+    transition-delay: .2s;
   }
 
   &:nth-of-type(4) .Article-title,
   &:nth-of-type(4) .Article-footer,
   &:nth-of-type(4) .Article-current {
-    transition-delay: 0.4s;
+    transition-delay: .3s;
   }
 }
 
 .Article.is-doneSwapping {
   .Article-current {
     opacity: 1;    
-    transition: opacity .3s;
+    transition: (@shuffleSpeed / 2) opacity 0s;
   }
 
   .Article-title,
   .Article-footer {
-    transition:  transform .4s;
+    transition: (@shuffleSpeed / 2) transform 0s;
   }
 
   .Article-title {
@@ -287,21 +282,6 @@
   .Article-footer {
     margin-bottom: -50px;
     transform: translate3d(0, -50px, 0);
-  }
-
-  &:nth-of-type(2) .Article-title,
-  &:nth-of-type(2) .Article-footer {
-    transition-delay: 0.1s;
-  }
-
-  &:nth-of-type(3) .Article-title,
-  &:nth-of-type(3) .Article-footer {
-    transition-delay: 0.2s;
-  }
-
-  &:nth-of-type(4) .Article-title,
-  &:nth-of-type(4) .Article-footer {
-    transition-delay: 0.3s;
   }
 }
 

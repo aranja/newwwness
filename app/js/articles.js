@@ -1,5 +1,14 @@
 import template from 'templates/article.jade!'
-import events from './transition-end'
+import Event from './event'
+
+const classNames = {
+  nextArticle: 'Article-new',
+  currentArticle: 'Article-current',
+  isEntering: 'Article--entrance',
+  isSwapping: 'is-swapping',
+  isDoneSwapping: 'is-doneSwapping',
+  isLoaded: 'is-loaded'
+}
 
 class Articles {
   constructor(data) {
@@ -14,67 +23,44 @@ class Articles {
 
   isLoaded() {
     if (!this.hasArticles) {
-      this.onAnimationEnd(this.articles, () => {
-        this.editPosts(post => post.classList.remove('Article--entrance'))
+      Event.animationEnd(this.get(this.articles.children.length - 1), () => {
+        this.editPosts(post => post.classList.remove(classNames.isEntering))
       })
+    } else {
+      this.editPosts(this.transitionPost.bind(this))
     }
 
-    this.articles.classList.add('is-loaded')
-
-    if (this.hasArticles) {
-      this.editPosts((post, idx) => {
-        let transOut = 400 + 100 * (idx + 1)
-        let transIn = 400 + 100 * (idx)
-        post.classList.remove('is-doneSwapping')
-
-        setTimeout(() => {
-          this.swapContent(post.querySelector('.Article-current'),
-              post.querySelector('.Article-new'))
-
-          setTimeout(() => {
-            post.classList.add('is-doneSwapping')
-
-            setTimeout(() => {
-              post.classList.remove('is-swapping')
-              post.classList.remove('is-doneSwapping')
-            }, transIn)
-          }, 10)
-        }, transOut)
-
-      })
-    }
-
+    this.articles.classList.add(classNames.isLoaded)
     this.hasArticles = true
   }
 
-  swapContent(curr, next) {
-    next.classList.remove('Article-new')
-    curr.classList.remove('Article-current')
-    next.classList.add('Article-current')
-    curr.classList.add('Article-new')
+  swapContent(post) {
+    let curr = post.getElementsByClassName(classNames.currentArticle)[0]
+    let next = post.getElementsByClassName(classNames.nextArticle)[0]
+
+    next.classList.remove(classNames.nextArticle)
+    curr.classList.remove(classNames.currentArticle)
+    next.classList.add(classNames.currentArticle)
+    curr.classList.add(classNames.nextArticle)
     curr.innerHTML = ''
   }
 
-  onAnimationEnd(el, cb, timeout = this.TRANSITION_TIMEOUT) {
-    if (events.animationEnd !== undefined) {
-      el.addEventListener(events.animationEnd, function endHandler() {
-        el.removeEventListener(events.animationEnd, endHandler)
-        cb.call(this, el)
-      })
-    } else {
-      setTimeout(() => cb.call(this, el), timeout)
-    }  
-  }
+  transitionPost(post, i) {
+    post.classList.add(classNames.isSwapping)
 
-  onTransitionEnd(el, cb, timeout = this.TRANSITION_TIMEOUT) {
-    el.addEventListener(events.transitionEnd, event => {
-      event.stopPropagation()
-      cb.call(this, el)
-    }, false)
+    Event.transitionEnd(post, () => {
+      this.swapContent(post)
+      post.classList.add(classNames.isDoneSwapping)
+
+      Event.transitionEnd(post, () => {
+        post.classList.remove(classNames.isSwapping)
+        post.classList.remove(classNames.isDoneSwapping)
+      }, 600)
+    }, 600)
   }
 
   isNotLoaded() {
-    this.articles.classList.remove('is-loaded')
+    this.articles.classList.remove(classNames.isLoaded)
   }
 
   get(index) {
@@ -99,12 +85,9 @@ class Articles {
       div.innerHTML = postEl
 
       if (domElement) {
-        domElement.classList.add('is-swapping')
-        setTimeout(() => {
-          domElement.classList.remove('Article--entrance')
-          domElement.setAttribute('href', post.link.url)
-          domElement.querySelector('.Article-new').innerHTML = div.querySelector('.Article-current').innerHTML
-        }, 2)
+        domElement.classList.remove(classNames.isEntering)
+        domElement.setAttribute('href', post.link.url)
+        domElement.getElementsByClassName(classNames.nextArticle)[0].innerHTML = div.getElementsByClassName(classNames.currentArticle)[0].innerHTML
       } else {
         this.articles.innerHTML += div.innerHTML
       }
