@@ -2,9 +2,9 @@ import template from 'templates/article.jade!'
 import Event from './event'
 
 const classNames = {
-  nextArticle: 'Article-new',
+  nextArticle: 'Article-next',
   currentArticle: 'Article-current',
-  isEntering: 'Article--entrance',
+  isEntering: 'is-entering',
   isSwapping: 'is-swapping',
   isDoneSwapping: 'is-doneSwapping',
   isLoaded: 'is-loaded'
