@@ -2,7 +2,7 @@ import request from 'qwest'
 
 class NewwwnessApi {
   constructor() {
-    this.urlBase = "/api/"
+    this.urlBase = "http://newwwness.co/api/"
   }
 
   load(collection) {
