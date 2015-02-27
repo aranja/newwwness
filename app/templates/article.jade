@@ -1,10 +1,12 @@
-each article in results
-  a.Article.Article--entrance(href=article.link target="_blank")
-    .Article-image(style="background-image: url(#{article.image})")
-    .Article-title= article.title
+- linkText = 
+a.Article.Article--entrance(href=post.link.url target="_blank")
+  .Article-new
+  .Article-current
+    img.Article-image(alt="Image for #{post.title}" src="#{post.image}")
+    .Article-title= post.title
     .Article-footer
       .Article-footerLink
         .Article-footerBorderLeft
         .Article-footerBorderRight
-        .Article-footerText= article.link.split('//')[1].split('/')[0].replace('www.', '')
+        .Article-footerText= post.link.text
         .Article-background

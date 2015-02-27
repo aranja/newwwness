@@ -1,5 +1,7 @@
 import Loader from './loader'
+import DomReady from './dom-ready'
 
-Loader.load("new")
-
-export default {}
+    
+DomReady(() => {
+  let loader = new Loader()
+})
