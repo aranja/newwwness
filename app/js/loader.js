@@ -31,7 +31,7 @@ class Loader {
 
   loadData(data) {
     return NewwwnessApi.load(data).then(data => {
-      data.results.forEach(this.loadPost.bind(this))
+      data.articles.forEach(this.loadPost.bind(this))
       return data
     }, this.errorHandler)
   }

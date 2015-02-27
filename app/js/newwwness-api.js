@@ -7,6 +7,7 @@ class NewwwnessApi {
 
   load(collection) {
     return request.get(this.urlBase + collection)
+      .then(JSON.parse)
   }
 }
 
