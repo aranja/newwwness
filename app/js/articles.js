@@ -13,7 +13,6 @@ const classNames = {
 class Articles {
   constructor(data) {
     this.articles = document.getElementById('articles')
-    this.TRANSITION_TIMEOUT = 2000
     this.hasArticles = false
   }
 
@@ -46,6 +45,7 @@ class Articles {
   }
 
   transitionPost(post, i) {
+    let timeOut = 600 // Timeout if browser doesn't support transitionEnd
     post.classList.add(classNames.isSwapping)
 
     Event.transitionEnd(post, () => {
@@ -55,8 +55,8 @@ class Articles {
       Event.transitionEnd(post, () => {
         post.classList.remove(classNames.isSwapping)
         post.classList.remove(classNames.isDoneSwapping)
-      }, 600)
-    }, 600)
+      }, timeOut)
+    }, timeOut)
   }
 
   isNotLoaded() {
