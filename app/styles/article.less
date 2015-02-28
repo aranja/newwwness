@@ -20,7 +20,9 @@
 }
 
 .Article {
-  background: #303030;
+  background: #303030 url(/img/logo-gray.svg) no-repeat;
+  background-position: 50% 50%;
+  background-size: 25% 25%;
   flex: 0 0 @width-Article;
   margin: 0 0 @margin-Article @margin-Article;
   overflow: hidden;
@@ -50,7 +52,7 @@
     right: 0;
     top: 0;
 
-    &:after {
+    &::after {
       background-color: rgba(0, 0, 0, 50%);
       bottom: 0;
       content: '';
