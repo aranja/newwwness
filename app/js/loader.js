@@ -1,5 +1,6 @@
 import NewwwnessApi from './newwwness-api'
 import Articles from './articles'
+import Event from './event'
 
 class Loader {
   constructor() {
@@ -18,7 +19,10 @@ class Loader {
   stop() {
     Articles.isLoaded()
     this.hasBeenFilled = true
-    this.el.classList.remove('is-loading')
+
+    Event.animationIteration(this.el, () => {
+      this.el.classList.remove('is-loading')
+    }, 1000)
   }
 
   refreshHandler() {
