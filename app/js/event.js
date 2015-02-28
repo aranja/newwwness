@@ -1,10 +1,26 @@
 let animationEndEvent = (() => {
   let el = document.createElement('div')
   let animations = {
-    'animation': 'animationend',
     'WebkitAnimation': 'webkitAnimationEnd',
     'MozAnimation': 'animationend',
-    'OAnimation': 'oAnimationEnd'
+    'animation': 'animationend'
+  }
+
+  for (let event in animations) {
+    if (el.style[event] !== undefined) {
+      return animations[event]
+    }
+  }
+
+  return undefined
+})()
+
+let animationIterationEvent = (() => {
+  let el = document.createElement('div')
+  let animations = {
+    'WebkitAnimation': 'webkitAnimationIteration',
+    'MozAnimation': 'animationiteration',
+    'animation': 'animationiteration'
   }
 
   for (let event in animations) {
@@ -36,6 +52,17 @@ let transitionEndEvent = (() => {
 class Event {
   constructor(timeOut = 2000) {
     this.TRANSITION_TIMEOUT = timeOut 
+  }
+
+  animationIteration(el, cb, timeout = this.TRANSITION_TIMEOUT) {
+    if (animationIterationEvent !== undefined) {
+      el.addEventListener(animationIterationEvent, function endHandler(event) {
+        el.removeEventListener(animationIterationEvent, endHandler)
+        cb(el)
+      })
+    } else {
+      setTimeout(() => cb(el), timeout)
+    }  
   }
 
   animationEnd(el, cb, timeout = this.TRANSITION_TIMEOUT) {
