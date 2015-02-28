@@ -30,20 +30,19 @@ class Loader {
   }
 
   loadData(data) {
-    return NewwwnessApi.load(data).then(data => {
-      data.results.forEach(this.loadPost.bind(this))
-      return data
+    return NewwwnessApi.load(data).then(res => {
+      JSON.parse(res).articles.forEach(this.loadPost.bind(this))
     }, this.errorHandler)
   }
 
   loadPost(post, i) {
     this.images.push(new Promise((resolve, reject) => {
       Articles.renderPost(post, this.hasBeenFilled ? Articles.get(i) : null)
-      .then(src => {
-        let image = new Image()
-        image.addEventListener('load', () => resolve())
-        image.src = src
-      }, this.errorHandler)
+        .then(src => {
+          let image = new Image()
+          image.addEventListener('load', () => resolve())
+          image.src = src
+        }, this.errorHandler)
     }))
 
     return post
