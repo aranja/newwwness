@@ -3,7 +3,7 @@ import DomReady from './dom-ready'
 
 try {
   Typekit.load()
-} catch () {}
+} catch (e) {}
 
 DomReady(() => {
   let loader = new Loader()
