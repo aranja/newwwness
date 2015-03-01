@@ -7,8 +7,8 @@ import (
 )
 
 func init() {
-	c := cors.New(cors.Options{})
-	http.Handle("/api/", c.Handler(CreateHandler()))
+	corsMiddleware := cors.New(cors.Options{})
+	http.Handle("/api/", corsMiddleware.Handler(CreateHandler()))
 }
 
 func CreateHandler() http.Handler {
