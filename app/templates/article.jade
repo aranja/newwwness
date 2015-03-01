@@ -1,8 +1,7 @@
-- linkText = 
-a.Article.Article--entrance(href=post.link.url target="_blank")
-  .Article-new
+a.Article.is-entering(href=post.link.url target="_blank")
+  .Article-next
   .Article-current
-    img.Article-image(alt="Image for #{post.title}" src="#{post.image}")
+    .Article-image(style="background: url(#{post.image});")
     .Article-title= post.title
     .Article-footer
       .Article-footerLink

@@ -1,5 +1,6 @@
 import NewwwnessApi from './newwwness-api'
 import Articles from './articles'
+import Event from './event'
 
 class Loader {
   constructor() {
@@ -18,7 +19,10 @@ class Loader {
   stop() {
     Articles.isLoaded()
     this.hasBeenFilled = true
-    this.el.classList.remove('is-loading')
+
+    Event.animationIteration(this.el, () => {
+      this.el.classList.remove('is-loading')
+    }, 1000)
   }
 
   refreshHandler() {
@@ -39,11 +43,11 @@ class Loader {
   loadPost(post, i) {
     this.images.push(new Promise((resolve, reject) => {
       Articles.renderPost(post, this.hasBeenFilled ? Articles.get(i) : null)
-      .then(src => {
-        let image = new Image()
-        image.addEventListener('load', () => resolve())
-        image.src = src
-      }, this.errorHandler)
+        .then(src => {
+          let image = new Image()
+          image.addEventListener('load', () => resolve())
+          image.src = src
+        }, this.errorHandler)
     }))
 
     return post

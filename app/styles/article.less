@@ -6,33 +6,35 @@
 @linkPadding: 6px;
 @opp-Article: ceil((tan(@degree-Article) * @hyp-Article - @linkPadding));
 @adj-Article: ceil((cos(@degree-Article) * @hyp-Article));
-@delay-Article: .2s;
+@delay-Article: .15s;
 @speedRatio-Article: (@hyp-Article / 42px); // Usual height of footer...magic.
+@shuffleSpeed: .9s;
 
 .Articles {
-  display: flex;
-  justify-content: center;
   align-items: center;
-  width: 100%;
+  display: flex;
   height: 100%;
+  justify-content: center;
   margin: auto;
+  width: 100%;
 }
 
 .Article {
-  background: #000;
+  background: #303030 url(/img/logo-gray.svg) no-repeat;
+  background-position: 50% 50%;
+  background-size: 25% 25%;
   flex: 0 0 @width-Article;
   margin: 0 0 @margin-Article @margin-Article;
-  opacity: 0;
   overflow: hidden;
   position: relative;
   height: @height-Article;
 
-  &-content {
-    padding: 1rem;
+  &:last-of-type {
+    margin-right: @margin-Article;
   }
 
   &-title {
-    color: white;
+    color: #fff;
     font-size: 2.5rem;
     font-style: italic;
     font-weight: 100;
@@ -43,18 +45,27 @@
   }
 
   &-image {
+    background-position: 50% 0%;
     bottom: 0;
-    left: 50%;
-    opacity: .5;
+    left: 0;
     position: absolute;
     right: 0;
-    transform: translate3d(-50%, 0, 0);
-    transition: opacity 0.2s;
     top: 0;
+
+    &::after {
+      background-color: rgba(0, 0, 0, 50%);
+      bottom: 0;
+      content: '';
+      left: 0;
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
   }
 
-  &-new {
+  &-next {
     opacity: 0;
+    visibility: hidden;
   }
 
   &-footer {
@@ -73,8 +84,8 @@
     color: #fff;
     font-weight: 600;
     margin: 0 2rem;
-    position: relative;
     padding: 1rem 0;
+    position: relative;
     transition: .2s color;
     z-index: 1;
   }
@@ -175,10 +186,7 @@
  * Triggers
  * Hover, Focus, Active, etc.
  */
-.Article:hover,
-.Article:focus {
-  outline: 0;
-
+.Article:hover  {
   // Text
   .Article-footerText {
     color: #319FEB;
@@ -230,75 +238,68 @@
 /**
  * Animations
  */
-.is-loaded .Article--entrance {
-  animation-duration: .5s;
-  animation-fill-mode: forwards;
-  animation-name: appear;
+.Article.is-entering {
+  opacity: 0;
+
+  .is-loaded & {
+    animation-duration: .5s;
+    animation-fill-mode: forwards;
+    animation-name: appear-Article;
+  }
+
+  &:nth-of-type(2) { animation-delay: .1s; }
+  &:nth-of-type(3) { animation-delay: .2s; }
+  &:nth-of-type(4) { animation-delay: .3s; }
 }
 
-.Article--swap {
-  opacity: 1;
-
-  .Article-current {
-    transition: opacity .3s;
-  }
-
-  .Article-title {
-    transform: translate3d(0, 0, 0);
-  }
-
-  .Article-footer {
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-.Article--swap.is-hidden {
+.Article.is-swapping {
   .Article-current {
     opacity: 0;
+    transition: (@shuffleSpeed / 2) opacity 0s;
+  }
+
+  &:nth-of-type(2) .Article-title,
+  &:nth-of-type(2) .Article-footer,
+  &:nth-of-type(2) .Article-current {
+    transition-delay: .1s;
+  }
+
+  &:nth-of-type(3) .Article-title,
+  &:nth-of-type(3) .Article-footer,
+  &:nth-of-type(3) .Article-current {
+    transition-delay: .2s;
+  }
+
+  &:nth-of-type(4) .Article-title,
+  &:nth-of-type(4) .Article-footer,
+  &:nth-of-type(4) .Article-current {
+    transition-delay: .3s;
+  }
+}
+
+.Article.is-doneSwapping {
+  .Article-current {
+    opacity: 1;    
+    transition: (@shuffleSpeed / 2) opacity 0s;
+  }
+
+  .Article-title,
+  .Article-footer {
+    transition: (@shuffleSpeed / 2) transform 0s;
   }
 
   .Article-title {
-    transform: translate3d(0, -100%, 0);
+    margin-top: -50px;
+    transform: translate3d(0, 50px, 0);
   }
 
   .Article-footer {
-    transform: translate3d(0, 100%, 0);
+    margin-bottom: -50px;
+    transform: translate3d(0, -50px, 0);
   }
 }
 
-.Article--swap.is-visible {
-  .Article-title {
-    transition: transform .2s;
-    transform: translate3d(0, 0, 0);
-  }
-
-  .Article-footer {
-    transition: transform .2s;
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-.Article:nth-of-type(1) {
-  animation-delay: 0.1s;
-}
-
-.Article:nth-of-type(2) {
-  animation-delay: 0.2s;
-}
-
-.Article:nth-of-type(3) {
-  animation-delay: 0.3s;
-}
-
-.Article:nth-of-type(4) {
-  animation-delay: 0.4s;
-}
-
-.Article:last-of-type {
-  margin-right: @margin-Article;
-}
-
-@keyframes appear {
+@keyframes appear-Article {
   0% {
     opacity: 0;
     transform: translate3d(0, 100px, 0);

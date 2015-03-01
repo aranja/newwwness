@@ -1,12 +1,9 @@
 module.exports = function(gulp, gutil) {
-  var connect = require('gulp-connect');
-  var prod = gutil.env.prod;
+  var exec = require('child_process').exec;
 
-  gulp.task('connect', function() {
-    connect.server({
-      root: [gulp.config.target],
-      port: gulp.config.port,
-      livereload: !prod
-    });
+  gulp.task('connect', function(cb) {
+    var child = exec('goapp serve ./api', cb);
+    child.stdout.pipe(process.stdout);
+    child.stderr.pipe(process.stderr);
   });
 };
