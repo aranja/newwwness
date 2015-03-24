@@ -8,6 +8,7 @@ module.exports = function(gulp, gutil) {
       .pipe(jade({
         pretty: !prod,
         locals: {
+          extension: gutil.env.extension,
           prod: prod
         }
       }))

@@ -1,4 +1,4 @@
-a.Article.is-entering(href=post.link.url target="_blank")
+a.Article.is-entering(href=post.link.url target=(extension ? false : "_blank"))
   .Article-next
   .Article-current
     .Article-image(style="background: url(#{post.image});")
