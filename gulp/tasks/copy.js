@@ -20,9 +20,12 @@ module.exports = function(gulp, gutil) {
     gulp.src(source + '/videos/**')
       .pipe(gulp.dest(target + '/videos/'))
       .pipe(prod ? gutil.noop() : connect.reload());
-    gulp.src(source + '/public/**')
-      .pipe(gulp.dest(target))
-      .pipe(prod ? gutil.noop() : connect.reload());
+
+    if (gutil.env.extension) {
+      gulp.src(source + '/extension/**')
+        .pipe(gulp.dest(target))
+        .pipe(prod ? gutil.noop() : connect.reload());
+    }
 
     if (!prod) {
       gulp.src(source + '/js/*.js')

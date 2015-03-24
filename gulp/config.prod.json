@@ -1,5 +1,8 @@
 {
   "port": 7000,
   "source": "app",
-  "target": "api/public"
+  "target": "api/public",
+  "page_config": {
+    "prod": true
+  }
 }

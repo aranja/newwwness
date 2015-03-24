@@ -5,8 +5,12 @@ var tasks = glob.sync('*.js', {
   cwd: './gulp/tasks/'
 });
 var prod = gutil.env.prod;
+var extension = gutil.env.extension;
 
-gulp.config = require(prod ? './config.prod.json' : './config.json');
+gulp.config = require(
+    extension ? './config.extension.json' :
+    prod ? './config.prod.json' :
+    './config.json');
 
 var plumber = require('gulp-plumber');
 var notify = require('gulp-notify');

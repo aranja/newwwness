@@ -1,0 +1,9 @@
+{
+  "port": 7000,
+  "source": "app",
+  "target": "extension",
+  "page_config": {
+    "prod": true,
+    "extension": true
+  }
+}
