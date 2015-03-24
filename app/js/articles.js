@@ -13,6 +13,7 @@ const classNames = {
 class Articles {
   constructor(data) {
     this.articles = document.getElementById('articles')
+    this.inExtension = document.body.getAttribute('data-extension') != null
     this.hasArticles = false
   }
 
@@ -80,7 +81,7 @@ class Articles {
     }
 
     return new Promise((resolve, reject) => {
-      let postEl = template({post})
+      let postEl = template({post, extension: this.inExtension})
       let div = document.createElement('div')
       div.innerHTML = postEl
 

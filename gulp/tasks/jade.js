@@ -7,7 +7,10 @@ module.exports = function(gulp, gutil) {
     return gulp.srcWithErrorHandling(gulp.config.source + '/views/*.jade')
       .pipe(jade({
         pretty: !prod,
-        locals: gulp.config.page_config
+        locals: {
+          extension: gutil.env.extension,
+          prod: prod
+        }
       }))
       .pipe(gulp.dest(gulp.config.target))
       .pipe(prod ? gutil.noop() : livereload());
