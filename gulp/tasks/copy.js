@@ -25,6 +25,10 @@ module.exports = function(gulp, gutil) {
       gulp.src(source + '/extension/**')
         .pipe(gulp.dest(target))
         .pipe(prod ? gutil.noop() : connect.reload());
+    } else {
+      gulp.src(source + '/website/**')
+        .pipe(gulp.dest(target))
+        .pipe(prod ? gutil.noop() : connect.reload());
     }
 
     if (!prod) {
