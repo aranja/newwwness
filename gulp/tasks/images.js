@@ -1,7 +1,7 @@
 module.exports = function(gulp, gutil) {
   var plumber = require('gulp-plumber');
   var changed = require('gulp-changed');
-  //var imagemin = require('gulp-imagemin');
+  var imagemin = require('gulp-imagemin');
   var connect = require('gulp-connect');
 
   var prod = gutil.env.prod;
@@ -10,7 +10,7 @@ module.exports = function(gulp, gutil) {
     return gulp.srcWithErrorHandling(gulp.config.source + '/img/**/*.{png,gif,jpg,jpeg,svg}')
       .pipe(prod ? gutil.noop() : changed(gulp.config.target + '/img/'))
 
-      //.pipe(!prod ? gutil.noop() : imagemin())
+      .pipe(!prod ? gutil.noop() : imagemin())
 
       .pipe(gulp.dest(gulp.config.target + '/img/'))
       .pipe(prod ? gutil.noop() : connect.reload());
