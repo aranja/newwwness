@@ -6,22 +6,17 @@
   font-size: 11px;
   line-height: 50px;
   letter-spacing: 1px;
-  padding: 0 55px;
+  padding: 0 25px;
   text-transform: uppercase;
+
+  @media @small {
+    padding: 0 55px;
+  }
 
   &:hover, &:focus {
     background: #0091ea;
     border-color: #0091ea;
     color: #fff;
     outline: 0;
-  }
-}
-
-.ExtensionButton {
-  opacity: 0;
-  transition: .5s 1s opacity;
-
-  .is-loaded & {
-    opacity: 1;
   }
 }

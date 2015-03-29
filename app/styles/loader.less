@@ -46,6 +46,25 @@
   animation: spin 1s infinite;
 }
 
+.LoadStagger {
+  opacity: 0;
+  transition: .5s .75s opacity;
+
+  .is-loaded & {
+    opacity: 1;
+  }
+
+  &--mobile {
+    @media @fullscreen {
+      opacity: 1;
+    }
+  }
+
+  &--2 {
+    transition-delay: 1s;
+  }
+}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);

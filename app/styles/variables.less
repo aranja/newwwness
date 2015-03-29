@@ -1,0 +1,16 @@
+// Media query variables
+@small: ~"all and (min-width: 480px)";
+@medium: ~"all and (min-width: 768px)";
+@large: ~"all and (min-width: 992px)";
+@retina: ~"all and (min-device-pixel-ratio: 1.5)";
+
+@width-Article: 260px;
+@height-xs-Article: 109px;
+@height-Article: 340px;
+@margin-xs-Article: 16px;
+@margin-Article: 32px;
+@width-2-Article: ((@width-Article * 2) + (@margin-Article * 2));
+@width-3-Article: ((@width-Article * 3) + (@margin-Article * 3));
+@width-4-Article: ((@width-Article * 4) + (@margin-Article * 4));
+
+@fullscreen: ~"(min-width: @{width-2-Article})";
