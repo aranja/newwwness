@@ -1,0 +1,27 @@
+.Button {
+  border: 1px solid #888;
+  border-radius: 10px;
+  color: #888;
+  display: inline-block;
+  font-size: 11px;
+  line-height: 50px;
+  letter-spacing: 1px;
+  padding: 0 55px;
+  text-transform: uppercase;
+
+  &:hover, &:focus {
+    background: #0091ea;
+    border-color: #0091ea;
+    color: #fff;
+    outline: 0;
+  }
+}
+
+.ExtensionButton {
+  opacity: 0;
+  transition: .5s 1s opacity;
+
+  .is-loaded & {
+    opacity: 1;
+  }
+}

@@ -30,7 +30,7 @@ class Articles {
       this.editPosts(this.transitionPost.bind(this))
     }
 
-    this.articles.classList.add(classNames.isLoaded)
+    document.body.classList.add(classNames.isLoaded)
     this.hasArticles = true
   }
 
@@ -61,7 +61,7 @@ class Articles {
   }
 
   isNotLoaded() {
-    this.articles.classList.remove(classNames.isLoaded)
+    document.body.classList.remove(classNames.isLoaded)
   }
 
   get(index) {
