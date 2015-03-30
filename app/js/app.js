@@ -1,6 +1,7 @@
+import './check-webstore'
+import domReady from './dom-ready'
 import Loader from './loader'
-import DomReady from './dom-ready'
 
-DomReady(() => {
+domReady(() => {
   let loader = new Loader()
 })
