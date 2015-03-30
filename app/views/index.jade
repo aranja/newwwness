@@ -45,7 +45,11 @@ html
 
     link(rel='stylesheet', href='css/main.css')
     script(src="https://use.typekit.net/zde5igb.js")
-    script try{Typekit.load();}catch(e){}
+    if extension
+      // Can't run inline scripts in extension
+      script(src="load-typekit.js")
+    else
+      script try{Typekit.load();}catch(e){}
   body(data-extension=extension)
     .Layout
       .Layout-loader
