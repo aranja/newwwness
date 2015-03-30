@@ -9,8 +9,9 @@
 @height-Article: 340px;
 @margin-xs-Article: 16px;
 @margin-Article: 32px;
-@width-2-Article: ((@width-Article * 2) + (@margin-Article * 2));
-@width-3-Article: ((@width-Article * 3) + (@margin-Article * 3));
-@width-4-Article: ((@width-Article * 4) + (@margin-Article * 4));
+@fullWidth-Article: (@width-Article + @margin-Article);
+@fullWidth-2-Articles: (@fullWidth-Article * 2);
+@fullWidth-3-Articles: (@fullWidth-Article * 3);
+@fullWidth-4-Articles: (@fullWidth-Article * 4);
 
-@fullscreen: ~"(min-width: @{width-2-Article})";
+@fullscreen: ~"(min-width: @{fullWidth-2-Articles})";
