@@ -1,7 +1,7 @@
-@paddingBottom-Footer: 40px;
+@paddingBottom-Footer: 34px;
 
 .Footer {
-  padding-bottom: @paddingBottom-Footer;
+  padding: @paddingBottom-Footer 0;
   position: relative;
 
   &-logo {
@@ -16,33 +16,38 @@
   }
 
   &-attribution {
-    bottom: 0;
     color: #8B898A;
-    left: 0;
-    margin: 0;
-    opacity: 0;
-    position: absolute;
-    right: 0;
     text-align: center;
-    transform: translateZ(0);
-    transition+: .3s transform;
-    transition+: .3s opacity;
+    margin: 0;
 
-    a {
-      color: #309CD7;
+    @media @fullscreen {
+      bottom: 0;
+      left: 0;
+      opacity: 0;
+      position: absolute;
+      right: 0;
+      transform: translateZ(0);
+      transition+: .3s transform;
+      transition+: .3s opacity;
     }
+  }
+
+  &-attribution a {
+    color: #309CD7;
   }
 }
 
 .Footer:hover {
-  .Footer-logo {
-    transform: translate3d(0, (-@paddingBottom-Footer / 2), 0);
-  }
+  @media @fullscreen {
+    .Footer-logo {
+      transform: translate3d(0, (-@paddingBottom-Footer / 2), 0);
+    }
 
-  .Footer-attribution {
-    opacity: 1;
-    transition+: .3s transform .1s;
-    transition+: .3s opacity .1s;
-    transform: translate3d(0, (-@paddingBottom-Footer / 2 - 3px), 0);
+    .Footer-attribution {
+      opacity: 1;
+      transition+: .3s transform .1s;
+      transition+: .3s opacity .1s;
+      transform: translate3d(0, (-@paddingBottom-Footer / 2 - 3px), 0);
+    }
   }
 }

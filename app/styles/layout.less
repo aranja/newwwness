@@ -1,0 +1,33 @@
+@import "variables";
+
+.Layout {
+  min-height: 100vh;
+
+  @media @fullscreen {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &-loader {
+    flex: 1;
+  }
+
+  &-main {
+    margin: 0 23px;
+
+    @media @fullscreen {
+      margin: 0 0 64px 0;
+    }
+  }
+
+  &-extensionAd {
+    text-align: center;
+  }
+
+  &-spacer {
+    flex: 1;
+  }
+
+  &-footer {
+  }
+}

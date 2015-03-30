@@ -1,6 +1,5 @@
-@width-Article: 260px;
-@height-Article: 340px;
-@margin-Article: 32px;
+@import "variables";
+
 @degree-Article: 45deg;
 @hyp-Article: 16px;
 @linkPadding: 6px;
@@ -11,40 +10,67 @@
 @shuffleSpeed: .9s;
 
 .Articles {
-  align-items: center;
-  display: flex;
-  margin-bottom: 32px;
-  justify-content: center;
-  width: 100%;
+  @media @fullscreen {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+  }
 }
 
 .Article {
   background: #171717 url(/img/logo-dark.svg) no-repeat;
   background-position: 50% 50%;
   background-size: 25% 25%;
-  flex: 0 0 @width-Article;
-  margin: 0 0 @margin-Article @margin-Article;
+  display: block;
+  margin-bottom: @margin-xs-Article;
+  min-height: 109px;
   overflow: hidden;
   position: relative;
-  height: @height-Article;
 
-  &:last-of-type {
-    margin-right: @margin-Article;
+  @media @fullscreen {
+    flex: 0 0 @width-Article;
+    margin: 0 0 0 @margin-Article;
+    height: @height-Article;
+
+    &:last-of-type {
+      margin-right: @margin-Article;
+    }
+  }
+
+  // Only space for 3
+  @media @fullscreen and (max-width: @fullWidth-4-Articles) {
+    &:first-child {
+      display: none;
+    }
+  }
+
+  // Only space for 2
+  @media @fullscreen and (max-width: @fullWidth-3-Articles) {
+    &:nth-of-type(2) {
+      display: none;
+    }
   }
 
   &-title {
     color: #fff;
-    font-size: 2.5rem;
+    font-size: 2rem;
     font-style: italic;
     font-weight: 100;
     line-height: 1;
-    padding: 2rem;
-    position: absolute;
-    top: 0;
+    padding: 1rem 2rem;
+    position: relative;
+
+    @media @fullscreen {
+      font-size: 2.5rem;
+      padding: 2rem;
+      position: absolute;
+      top: 0;
+    }
   }
 
   &-image {
-    background-position: 50% 0%;
+    background-position: 50% 50%;
+    background-size: cover;
     bottom: 0;
     left: 0;
     position: absolute;
@@ -64,14 +90,20 @@
 
   &-next {
     opacity: 0;
+    position: absolute;
+    top: 0;
     visibility: hidden;
   }
 
   &-footer {
-    bottom: -1px; // Fix for weird safari rendering bug...
-    left: 0;
-    position: absolute;
-    right: 0;
+    position: relative;
+
+    @media @fullscreen {
+      bottom: -1px; // Fix for weird safari rendering bug...
+      left: 0;
+      position: absolute;
+      right: 0;
+    }
   }
 
   &-footerLink {
@@ -83,10 +115,14 @@
     color: #fff;
     font-weight: 600;
     margin: 0 2rem;
-    padding: 1rem 0;
+    padding: .75rem 0;
     position: relative;
     transition: .2s color;
     z-index: 1;
+
+    @media @fullscreen {
+      padding: 1rem 0;
+    }
   }
 
   &-footerBorderRight,
@@ -185,7 +221,7 @@
  * Triggers
  * Hover, Focus, Active, etc.
  */
-.Article:hover  {
+.no-touchevents .Article:hover  {
   // Text
   .Article-footerText {
     color: #319FEB;
@@ -288,13 +324,23 @@
   }
 
   .Article-title {
-    margin-top: -50px;
+    bottom: 50px;
     transform: translate3d(0, 50px, 0);
+
+    @media @fullscreen {
+      bottom: auto;
+      margin-top: -50px;
+    }
   }
 
   .Article-footer {
-    margin-bottom: -50px;
+    top: 50px;
     transform: translate3d(0, -50px, 0);
+
+    @media @fullscreen {
+      margin-bottom: -50px;
+      top: auto;
+    }
   }
 }
 

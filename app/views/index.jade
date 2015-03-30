@@ -44,21 +44,30 @@ html
       meta(name="theme-color", content="#ffffff")
 
     link(rel='stylesheet', href='css/main.css')
+    script(src="js/modernizr.js")
+    script(src="https://use.typekit.net/zde5igb.js")
+    if extension
+      // Can't run inline scripts in extension
+      script(src="load-typekit.js")
+    else
+      script try{Typekit.load();}catch(e){}
   body(data-extension=extension)
-    #loader.Loader.is-loading
+    .Layout
+      .Layout-loader
+        #loader.Loader.is-loading
 
-    main
-      #articles.Articles
+      main.Layout-main
+        #articles.Articles
+
       if !extension
-        div
-          a.Button.ExtensionButton(href="https://chrome.google.com/webstore/detail/newwwness/bgehdelljbcknhkackefjmceniacejel").
+        .Layout-extensionAd.u-hide(data-check-webstore)
+          a.Button.LoadStagger(href="https://chrome.google.com/webstore/detail/newwwness/bgehdelljbcknhkackefjmceniacejel").
             Download Chrome Extension
 
-    footer.Footer
-      .Footer-logo
-      p.Footer-attribution Made with love by <a href="https://twitter.com/upperquad">@upperquad</a> and <a href="https://aranja.com/">@aranja</a>.
-
-    script(src="https://use.typekit.net/zde5igb.js")
+      .Layout-spacer
+      footer.Layout-footer.Footer.LoadStagger.LoadStagger--mobile.LoadStagger--2
+        .Footer-logo
+        p.Footer-attribution Made with love by <a href="https://twitter.com/upperquad">@upperquad</a> and <a href="https://aranja.com/">@aranja</a>.
 
     if prod
       script(src="js/bundle.js")
