@@ -9,7 +9,7 @@ import (
 func getNewArticles(c appengine.Context) ([]Article, error) {
 	articles := []Article{}
 
-	keys, err := datastore.NewQuery("Article").Order("-Created").Limit(4).GetAll(c, &articles)
+	keys, err := datastore.NewQuery("Article").Order("-Created").Limit(20).GetAll(c, &articles)
 
 	if err != nil {
 		return nil, err
