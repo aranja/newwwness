@@ -35,14 +35,11 @@ class Loader {
 
   loadData(data) {
     return NewwwnessApi.load(data).then(data => {
-      if (data.articles.length > 4)
-        for (let i = 0; i < 4; i++) {
-          let rand = Math.floor(Math.random() * data.articles.length)
-          this.loadPost(data.articles[rand], i)
-          data.articles.splice(rand, 1)
-        }
-      else
-        data.articles.forEach(this.loadPost.bind(this))
+      for (let i = 0; i < 4 && i < data.articles.length; i++) {
+        let rand = Math.floor(Math.random() * data.articles.length)
+        this.loadPost(data.articles[rand], i)
+        data.articles.splice(rand, 1)
+      }
       return data
     }, this.errorHandler)
   }
