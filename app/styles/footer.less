@@ -5,11 +5,12 @@
   position: relative;
 
   &-logo {
-    background-image: url(img/wordmark.svg);
+    background-image: url(img/logo-dark.svg);
     background-repeat: no-repeat;
     background-position: 50% 50%;
     background-size: contain;
     height: 36px;
+    opacity: 0.44;
     transform: translateZ(0);
     transition: .3s transform;
     width: 100%;
@@ -17,8 +18,11 @@
 
   &-attribution {
     color: #8B898A;
-    text-align: center;
+    font-size: 12px;
+    font-weight: 300;
     margin: 0;
+    text-align: center;
+    text-transform: uppercase;
 
     @media @fullscreen {
       bottom: 0;
