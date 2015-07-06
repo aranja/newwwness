@@ -1,5 +1,10 @@
 System.config({
   "transpiler": "babel",
+  "babelOptions": {
+    "optional": [
+      "runtime"
+    ]
+  },
   "paths": {
     "*": "*.js",
     "Aranja.com/*": "js/*.js",
@@ -11,6 +16,9 @@ System.config({
 
 System.config({
   "map": {
+    "babel": "npm:babel-core@5.6.15",
+    "babel-runtime": "npm:babel-runtime@5.6.15",
+    "core-js": "npm:core-js@0.9.18",
     "es6-promise": "npm:es6-promise@2.0.1",
     "jade": "github:johnsoftek/plugin-jade@0.4.0",
     "jsonp": "npm:jsonp@0.1.0",
@@ -35,10 +43,8 @@ System.config({
     },
     "github:jspm/nodelibs-http@1.7.0": {
       "Base64": "npm:Base64@0.2.1",
-      "events": "github:jspm/nodelibs-events@0.1.0",
       "inherits": "npm:inherits@2.0.1",
       "stream": "github:jspm/nodelibs-stream@0.1.0",
-      "url": "github:jspm/nodelibs-url@0.1.0",
       "util": "github:jspm/nodelibs-util@0.1.0"
     },
     "github:jspm/nodelibs-https@0.1.0": {
@@ -129,6 +135,9 @@ System.config({
       "crypto": "github:jspm/nodelibs-crypto@0.1.0",
       "url": "github:jspm/nodelibs-url@0.1.0"
     },
+    "npm:babel-runtime@5.6.15": {
+      "process": "github:jspm/nodelibs-process@0.1.1"
+    },
     "npm:boom@0.4.2": {
       "hoek": "npm:hoek@0.9.1",
       "http": "github:jspm/nodelibs-http@1.7.0",
@@ -188,6 +197,11 @@ System.config({
       "acorn-globals": "npm:acorn-globals@1.0.2"
     },
     "npm:constants-browserify@0.0.1": {
+      "systemjs-json": "github:systemjs/plugin-json@0.1.0"
+    },
+    "npm:core-js@0.9.18": {
+      "fs": "github:jspm/nodelibs-fs@0.1.1",
+      "process": "github:jspm/nodelibs-process@0.1.1",
       "systemjs-json": "github:systemjs/plugin-json@0.1.0"
     },
     "npm:core-util-is@1.0.1": {

@@ -24,7 +24,7 @@
   font-size: 12px;
   font-weight: 100;
   left: 0;
-  opacity: 0;
+  opacity: 1;
   position: absolute;
   right: 0;
   text-align: center;
@@ -37,9 +37,8 @@
   transition: opacity .3s;
 }
 
-.Loader:hover:after {
-  opacity: 1;
-  transition: opacity .3s;
+.is-loading:after {
+  opacity: 0;
 }
 
 .is-loading:before {
