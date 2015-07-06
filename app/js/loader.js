@@ -35,7 +35,7 @@ class Loader {
 
   loadData(data) {
     return NewwwnessApi.load(data).then(data => {
-      let length = data.articles.length;
+      let length = data.articles.length
       for (let i = 0; i < 4 && i < length; i++) {
         let rand = Math.floor(Math.random() * data.articles.length)
         this.loadPost(data.articles[rand], i)
