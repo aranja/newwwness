@@ -38,7 +38,7 @@
     "gulp-util": "^3.0.3",
     "gulp-watch": "^4.1.1",
     "gulp-zip": "^2.0.3",
-    "jspm": "jspm/jspm-cli",
+    "jspm": "^0.15.6",
     "rimraf": "^2.2.8",
     "run-sequence": "^1.0.2",
     "vinyl-source-stream": "^1.0.0"
