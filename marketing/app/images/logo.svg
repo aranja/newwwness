@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 18.1.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="240.4px" height="299.1px" viewBox="0 0 240.4 299.1" enable-background="new 0 0 240.4 299.1" xml:space="preserve">
+<g id="n_4_">
+	<g id="left_4_">
+		<line fill="none" stroke="#FFFFFF" stroke-width="12" stroke-miterlimit="10" x1="6" y1="11.1" x2="6" y2="296.6"/>
+		<line fill="none" stroke="#FFFFFF" stroke-width="12" stroke-miterlimit="10" x1="36.5" y1="11.1" x2="36.5" y2="296.6"/>
+		<line fill="none" stroke="#FFFFFF" stroke-width="12" stroke-miterlimit="10" x1="66.8" y1="11.1" x2="66.8" y2="296.6"/>
+	</g>
+	<path id="middle_4_" fill="#FFFFFF" d="M0,11.1C14.4-4,60.5-3.4,73.9,11.1c18.6,14.3,163.5,272.3,166.5,277.5
+		c-9.9,11-53.7,15.7-77.1,2.1C158.1,284,2,13,0,11.1z"/>
+	<g id="right_4_">
+		<line fill="none" stroke="#FFFFFF" stroke-width="12" stroke-miterlimit="10" x1="173.4" y1="4" x2="173.4" y2="281.4"/>
+		<line fill="none" stroke="#FFFFFF" stroke-width="12" stroke-miterlimit="10" x1="203.8" y1="3.9" x2="203.8" y2="296.8"/>
+		<line fill="none" stroke="#FFFFFF" stroke-width="12" stroke-miterlimit="10" x1="234.3" y1="4" x2="234.3" y2="288.2"/>
+	</g>
+	<g id="shadow_4_">
+		<polygon fill="#D9D8D7" points="0,11.1 0,25 12.1,45.6 12.1,31.2 		"/>
+		<polygon fill="#D9D8D7" points="30.5,63.1 30.5,77.4 42.5,97.9 42.5,83.7 		"/>
+		<polygon fill="#D9D8D7" points="60.9,115.8 60.9,129.8 72.9,150.3 72.9,136.4 		"/>
+		<polygon fill="#D9D8D7" points="167.4,145.6 167.4,160.8 179.4,181.7 179.4,166.8 		"/>
+		<polygon fill="#D9D8D7" points="197.7,199 197.7,213.4 209.8,234.7 209.8,220.1 		"/>
+		<polygon fill="#D9D8D7" points="228.4,253.6 228.3,267.2 240.4,288.5 240.4,275 		"/>
+	</g>
+</g>
+</svg>

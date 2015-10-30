@@ -1,0 +1,48 @@
+.button {
+  border: solid 1px #fff;
+  border-radius: 5px;
+  color: #fff;
+  display: inline-block;
+  margin-top: 50px;
+  padding: 20px 50px 20px;
+  text-decoration: none;
+  transition: background .5s, color .5s;
+
+  @include respond-to(smartphone) {
+    padding: 15px 30px 15px;
+  }
+
+  &:hover {
+    background: #fff;
+    color: $blue;
+  }
+}
+
+.text-link {
+  color: #fff;
+  position: relative;
+  text-decoration: none;
+  transition: color .3s;
+
+  &:after {
+    bottom: 0;
+    background: #fff;
+    content: '';
+    left: 0;
+    height: 1px;
+    opacity: .5;
+    position: absolute;
+    transition: height .3s, opacity .3s;
+    width: 100%;
+    z-index: -1;
+  }
+
+  &:hover {
+    color: $blue;
+
+    &:after {
+      height: 100%;
+      opacity: 1;
+    }
+  }
+}
