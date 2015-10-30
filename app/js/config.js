@@ -8,8 +8,8 @@ System.config({
   "paths": {
     "*": "*.js",
     "Aranja.com/*": "js/*.js",
-    "github:*": "../jspm_packages/github/*.js",
-    "npm:*": "../jspm_packages/npm/*.js"
+    "github:*": "../n/jspm_packages/github/*.js",
+    "npm:*": "../n/jspm_packages/npm/*.js"
   },
   "parser": "6to5"
 });
