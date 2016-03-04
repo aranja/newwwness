@@ -1,7 +1,7 @@
 a.Article.is-entering(href=post.link.url target=(extension ? false : "_blank"))
   .Article-next
   .Article-current
-    .Article-image(style="background-image: url(#{post.image});")
+    .Article-image(style="background-image: url(#{post.fields.imageUrl});")
     .Article-title= post.title
     .Article-footer
       .Article-footerLink

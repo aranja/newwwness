@@ -35,12 +35,16 @@ class Loader {
 
   loadData(data) {
     return NewwwnessApi.load(data).then(data => {
-      let length = data.articles.length
+      this.populateImages(data)
+
+      let length = data.items.length
+
       for (let i = 0; i < 4 && i < length; i++) {
-        let rand = Math.floor(Math.random() * data.articles.length)
-        this.loadPost(data.articles[rand], i)
-        data.articles.splice(rand, 1)
+        let rand = Math.floor(Math.random() * data.items.length)
+        this.loadPost(data.items[rand], i)
+        data.items.splice(rand, 1)
       }
+
       return data
     }, this.errorHandler)
   }
@@ -60,6 +64,20 @@ class Loader {
 
   waitForImages() {
     return Promise.all(this.images).then(() => this.stop())
+  }
+
+  populateImages(data) {
+    let length = data.items.length
+
+    for (let i = 0; i < length; i++) {
+      let imageId = data.items[i].fields.image.sys.id;
+
+      for (let j = 0; j < data.includes.Asset.length; j++) {
+        if (data.includes.Asset[j].sys.id == imageId) {
+          data.items[i].fields.imageUrl = data.includes.Asset[j].fields.file.url
+        }
+      }
+    }
   }
 
   load(collection) {

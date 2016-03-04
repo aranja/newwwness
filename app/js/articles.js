@@ -76,8 +76,8 @@ class Articles {
 
   renderPost(post, domElement) {
     post.link = {
-      url: post.link,
-      text: post.link.split('//')[1].split('/')[0].replace('www.', '')
+      url: post.fields.link,
+      text: post.fields.link.split('//')[1].split('/')[0].replace('www.', '')
     }
 
     return new Promise((resolve, reject) => {
@@ -93,7 +93,7 @@ class Articles {
         this.articles.innerHTML += div.innerHTML
       }
 
-      resolve(post.image)
+      resolve(post.fields.imageUrl)
     })
   }
 }
