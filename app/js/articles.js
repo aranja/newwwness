@@ -22,13 +22,13 @@ class Articles {
   }
 
   isLoaded() {
-    if (!this.hasArticles) {
+    //if (!this.hasArticles) {
       Event.animationEnd(this.get(this.articles.children.length - 1), () => {
         this.editPosts(post => post.classList.remove(classNames.isEntering))
       })
-    } else {
+    /*} else {
       this.editPosts(this.transitionPost.bind(this))
-    }
+    }*/
 
     document.body.classList.add(classNames.isLoaded)
     this.hasArticles = true
@@ -85,13 +85,13 @@ class Articles {
       let div = document.createElement('div')
       div.innerHTML = postEl
 
-      if (domElement) {
+      /*if (domElement) {
         domElement.classList.remove(classNames.isEntering)
         domElement.setAttribute('href', post.link.url)
         domElement.getElementsByClassName(classNames.nextArticle)[0].innerHTML = div.getElementsByClassName(classNames.currentArticle)[0].innerHTML
-      } else {
+      } else {*/
         this.articles.innerHTML += div.innerHTML
-      }
+      //}
 
       resolve(post.fields.imageUrl)
     })

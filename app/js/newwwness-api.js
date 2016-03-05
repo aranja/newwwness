@@ -6,11 +6,21 @@ class NewwwnessApi {
     this.urlToken = "?access_token=44ca874b32ca61cdebbb180fd76a3a9e4a74348b5b47fa916ad7887c0786d0bf";
   }
 
-  load(collection) {
-    return request.get(this.urlBase + this.urlToken, null, {
-      cache: true
-    })
-      .then(JSON.parse)
+  load(params) {
+    this.additional = '&order=-fields.created&content_type=article'
+
+    if (params.exclude) {
+      this.additional += '&sys.id%5Bnin%5D=' + params.exclude
+    }
+
+    if (params.limit) {
+      this.additional += '&limit=' + params.limit
+    }
+
+    return request.get(this.urlBase + this.urlToken + this.additional,
+      null,
+      { cache: true }
+    ).then(JSON.parse)
   }
 }
 
