@@ -12,6 +12,7 @@ const classNames = {
 
 class Articles {
   constructor(data) {
+    document.body.classList.add(classNames.isLoaded)
     this.articles = document.getElementById('articles')
     this.inExtension = document.body.getAttribute('data-extension') != null
     this.hasArticles = false
@@ -23,14 +24,14 @@ class Articles {
 
   isLoaded() {
     //if (!this.hasArticles) {
-      Event.animationEnd(this.get(this.articles.children.length - 1), () => {
+      /*Event.animationEnd(this.get(this.articles.children.length - 1), () => {
         this.editPosts(post => post.classList.remove(classNames.isEntering))
-      })
+      })*/
     /*} else {
       this.editPosts(this.transitionPost.bind(this))
     }*/
 
-    document.body.classList.add(classNames.isLoaded)
+    //document.body.classList.add(classNames.isLoaded)
     this.hasArticles = true
   }
 
@@ -61,7 +62,7 @@ class Articles {
   }
 
   isNotLoaded() {
-    document.body.classList.remove(classNames.isLoaded)
+    //document.body.classList.remove(classNames.isLoaded)
   }
 
   get(index) {
@@ -85,13 +86,7 @@ class Articles {
       let div = document.createElement('div')
       div.innerHTML = postEl
 
-      /*if (domElement) {
-        domElement.classList.remove(classNames.isEntering)
-        domElement.setAttribute('href', post.link.url)
-        domElement.getElementsByClassName(classNames.nextArticle)[0].innerHTML = div.getElementsByClassName(classNames.currentArticle)[0].innerHTML
-      } else {*/
-        this.articles.innerHTML += div.innerHTML
-      //}
+      this.articles.appendChild(div.firstChild);
 
       resolve(post.fields.imageUrl)
     })

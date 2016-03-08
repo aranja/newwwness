@@ -28,7 +28,7 @@ class Loader {
   scrollHandler() {
     let offset = (document.all ? iebody.scrollTop : pageYOffset)
 
-    if (offset > 50 + (340 * (this.rows - 1))) {
+    if (offset > 5 + (340 * (this.rows - 1))) {
       this.load({exclude: this.ids})
       this.rows++
     }
@@ -63,7 +63,6 @@ class Loader {
     this.ids.push(post.sys.id)
 
     this.images.push(new Promise((resolve, reject) => {
-      //Articles.renderPost(post, this.hasBeenFilled ? Articles.get(i) : null)
       Articles.renderPost(post, null)
         .then(src => {
           let image = new Image()
