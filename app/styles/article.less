@@ -21,7 +21,7 @@
   background: #171717 url(img/logo-dark.svg) no-repeat;
   background-position: 50% 50%;
   background-size: 25% 25%;
-  display: inline-block;
+  float: left;
   margin-bottom: @margin-xs-Article;
   min-height: 109px;
   overflow: hidden;
@@ -282,9 +282,9 @@
     animation-name: appear-Article;
   }
 
-  &:nth-of-type(2) { animation-delay: .1s; }
-  &:nth-of-type(3) { animation-delay: .2s; }
-  &:nth-of-type(4) { animation-delay: .3s; }
+  &:nth-of-type(4n+2) { animation-delay: .1s; }
+  &:nth-of-type(4n+3) { animation-delay: .2s; }
+  &:nth-of-type(4n+4) { animation-delay: .3s; }
 }
 
 .Article.is-swapping {

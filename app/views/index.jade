@@ -53,21 +53,12 @@ html
       script try{Typekit.load();}catch(e){}
   body(data-extension=extension)
     .Layout
-      .Layout-loader
-        #loader.Loader.is-loading
+
+      header.Layout-header.Header.LoadStagger.LoadStagger--mobile.LoadStagger--2
+        .Header-logo
 
       main.Layout-main
         #articles.Articles
-
-      if !extension
-        .Layout-extensionAd.u-hide(data-check-webstore)
-          a.Button.LoadStagger(href="https://chrome.google.com/webstore/detail/newwwness/bgehdelljbcknhkackefjmceniacejel").
-            Download Chrome Extension
-
-      .Layout-spacer
-      footer.Layout-footer.Footer.LoadStagger.LoadStagger--mobile.LoadStagger--2
-        .Footer-logo
-        p.Footer-attribution Made with &#9829; by <a href="http://upperquad.com/">UQ</a> and <a href="https://aranja.com/">Aranja</a>.
 
     if prod
       script(src="js/bundle.js")

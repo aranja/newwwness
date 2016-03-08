@@ -11,21 +11,14 @@ class Loader {
     this.hasBeenFilled = false
     this.load('new')
     this.rows = 1
-    this.el.addEventListener('click', this.refreshHandler.bind(this))
     window.addEventListener('scroll', this.scrollHandler.bind(this))
   }
 
   start() {
-    this.el.classList.add('is-loading')
   }
 
   stop() {
     Articles.isLoaded()
-    // this.hasBeenFilled = true
-
-    Event.animationIteration(this.el, () => {
-      this.el.classList.remove('is-loading')
-    }, 1000)
   }
 
   refreshHandler() {
