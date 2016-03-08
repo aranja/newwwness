@@ -17,6 +17,10 @@ class NewwwnessApi {
       this.additional += '&limit=' + params.limit
     }
 
+    if (params.skip) {
+      this.additional += '&skip=' + params.skip
+    }
+
     return request.get(this.urlBase + this.urlToken + this.additional,
       null,
       { cache: true }

@@ -12,6 +12,7 @@ class Loader {
     this.load('new')
     this.rows = 1
     window.addEventListener('scroll', this.scrollHandler.bind(this))
+    window.addEventListener('mousewheel', this.wheelHandler.bind(this))
   }
 
   start() {
@@ -28,9 +29,16 @@ class Loader {
   scrollHandler() {
     let offset = (document.all ? iebody.scrollTop : pageYOffset)
 
-    if (offset > 5 + (340 * (this.rows - 1))) {
-      this.load({exclude: this.ids})
+    if (offset > -190 + (370 * (this.rows - 1))) {
+      this.load({exclude: this.ids, skip: this.rows * 4})
       this.rows++
+    }
+  }
+
+  wheelHandler(event) {
+    if (event.wheelDelta > 40) {
+      // this.load('new');
+      // this.rows = 1;
     }
   }
 
@@ -49,6 +57,7 @@ class Loader {
 
         if (params == 'new') {
           rand = Math.floor(Math.random() * data.items.length)
+          this.ids.push(data.items[rand].sys.id)
         }
 
         this.loadPost(data.items[rand], i)
@@ -60,8 +69,6 @@ class Loader {
   }
 
   loadPost(post, i) {
-    this.ids.push(post.sys.id)
-
     this.images.push(new Promise((resolve, reject) => {
       Articles.renderPost(post, null)
         .then(src => {
