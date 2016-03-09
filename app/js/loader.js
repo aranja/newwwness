@@ -20,9 +20,7 @@ class Loader {
   }
 
   stop(collection) {
-    //if (collection == 'new') {
-      Articles.isLoaded(collection)
-    //}
+    Articles.isLoaded(collection)
   }
 
   refreshHandler() {
@@ -31,6 +29,7 @@ class Loader {
 
   scrollHandler() {
     let offset = (document.all ? iebody.scrollTop : pageYOffset)
+    document.getElementsByTagName('header')[0].style.opacity = 1 - offset / (window.innerHeight / 4 - 100)
 
     if (offset > -190 + (370 * (this.rows - 1))) {
       this.load({exclude: this.ids, limit: 4, skip: (this.rows - 1) * 4})
@@ -44,6 +43,15 @@ class Loader {
       this.ids = []
       this.rows = 1
       this.load('new')
+
+      clearTimeout(this.timeout)
+      this.timeout = setTimeout(function() {
+        this.reloading = false
+      }.bind(this), 1000)
+    }
+
+    if (pageYOffset > 0) {
+      this.reloading = true;
 
       clearTimeout(this.timeout)
       this.timeout = setTimeout(function() {
