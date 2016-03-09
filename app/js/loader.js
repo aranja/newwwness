@@ -107,7 +107,7 @@ class Loader {
 
       if (shuffle) {
         max = shuffleWithin === undefined ||
-                shuffleWithin > this.dataAvailable.length ?
+              shuffleWithin > this.dataAvailable.length ?
                 this.dataAvailable.length : shuffleWithin
         rand = Math.floor(Math.random() * max)
 
@@ -132,20 +132,16 @@ class Loader {
   }
 
   loadPost(post, i, replace) {
-    this.images.push(new Promise((resolve, reject) => {
-      Articles.renderPost(post, replace ? Articles.get(i) : null)
-        .then(src => {
-          let image = new Image()
-          image.addEventListener('load', () => resolve())
-          image.src = src
-        }, this.errorHandler)
-    }))
+    //this.images.push(new Promise((resolve, reject) => {
+    Articles.renderPost(post, replace ? Articles.get(i) : null)
+    //}))
 
     return post
   }
 
   waitForImages(params) {
-    return Promise.all(this.images).then(() => this.stop(params))
+    this.stop(params)
+    //return Promise.all(this.images).then(() => this.stop(params))
   }
 
   populateImages(data) {

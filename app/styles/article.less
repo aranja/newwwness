@@ -73,9 +73,11 @@
     background-size: cover;
     bottom: 0;
     left: 0;
+    opacity: 0;
     position: absolute;
     right: 0;
     top: 0;
+    transition: opacity .3s;
 
     &::after {
       background-color: rgba(0, 0, 0, 50%);
@@ -273,6 +275,12 @@
 /**
  * Animations
  */
+.Article.is-imageLoaded {
+  & .Article-image {
+    opacity: 1;
+  }
+}
+
 .Article.is-entering {
   opacity: 0;
 

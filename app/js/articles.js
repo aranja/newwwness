@@ -8,7 +8,8 @@ const classNames = {
   isLeaving: 'is-leaving',
   isSwapping: 'is-swapping',
   isDoneSwapping: 'is-doneSwapping',
-  isLoaded: 'is-loaded'
+  isLoaded: 'is-loaded',
+  isImageLoaded: 'is-imageLoaded'
 }
 
 class Articles {
@@ -74,6 +75,11 @@ class Articles {
     return this.articles.children[index]
   }
 
+  imageLoaded(index) {
+    //console.log(index)
+    this.articles.children[index].classList.add(classNames.isImageLoaded)
+  }
+
   editPosts(cb) {
     for (let i = 0; i < this.articles.children.length; i++) {
       cb(this.get(i), i)
@@ -86,21 +92,24 @@ class Articles {
       text: post.fields.link.split('//')[1].split('/')[0].replace('www.', '')
     }
 
-    return new Promise((resolve, reject) => {
-      let postEl = template({post, extension: this.inExtension})
-      let div = document.createElement('div')
-      div.innerHTML = postEl
+    let postEl = template({post, extension: this.inExtension})
+    let div = document.createElement('div')
+    div.innerHTML = postEl
+    let i = 0
 
-      if (domElement) {
-        domElement.classList.remove(classNames.isEntering)
-        domElement.setAttribute('href', post.link.url)
-        domElement.getElementsByClassName(classNames.nextArticle)[0].innerHTML = div.getElementsByClassName(classNames.currentArticle)[0].innerHTML
-      } else {
-        this.articles.appendChild(div.firstChild);
-      }
+    if (domElement) {
+      domElement.classList.remove(classNames.isEntering)
+      domElement.setAttribute('href', post.link.url)
+      domElement.getElementsByClassName(classNames.nextArticle)[0].innerHTML = div.getElementsByClassName(classNames.currentArticle)[0].innerHTML
+    } else {
+      this.articles.appendChild(div.firstChild);
+      i = this.articles.childNodes.length - 1
+    }
 
-      resolve(post.fields.imageUrl)
-    })
+    let image = new Image()
+    image.addEventListener('load', () => this.imageLoaded(i))
+    image.src = post.fields.imageUrl
+
   }
 }
 
