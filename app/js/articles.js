@@ -5,6 +5,7 @@ const classNames = {
   nextArticle: 'Article-next',
   currentArticle: 'Article-current',
   isEntering: 'is-entering',
+  isLeaving: 'is-leaving',
   isSwapping: 'is-swapping',
   isDoneSwapping: 'is-doneSwapping',
   isLoaded: 'is-loaded'
@@ -22,16 +23,15 @@ class Articles {
     this.articles.innerHTML = ''
   }
 
-  isLoaded() {
-    //if (!this.hasArticles) {
-      /*Event.animationEnd(this.get(this.articles.children.length - 1), () => {
-        this.editPosts(post => post.classList.remove(classNames.isEntering))
-      })*/
-    /*} else {
-      this.editPosts(this.transitionPost.bind(this))
-    }*/
+  isLoaded(collection) {
+    Event.animationEnd(this.get(this.articles.children.length - 1), () => {
+      this.editPosts(post => post.classList.remove(classNames.isEntering))
+    })
 
-    //document.body.classList.add(classNames.isLoaded)
+    if (collection == 'new' && this.hasArticles) {
+      this.editPosts(this.transitionPost.bind(this))
+    }
+
     this.hasArticles = true
   }
 
@@ -51,13 +51,18 @@ class Articles {
     post.classList.add(classNames.isSwapping)
 
     Event.transitionEnd(post, () => {
-      this.swapContent(post)
-      post.classList.add(classNames.isDoneSwapping)
+      if (i < 4) {
+        this.swapContent(post)
+        post.classList.add(classNames.isDoneSwapping)
 
-      Event.transitionEnd(post, () => {
-        post.classList.remove(classNames.isSwapping)
-        post.classList.remove(classNames.isDoneSwapping)
-      }, timeOut)
+        Event.transitionEnd(post, () => {
+          post.classList.remove(classNames.isSwapping)
+          post.classList.remove(classNames.isDoneSwapping)
+        }, timeOut)
+      }
+      else {
+        post.remove()
+      }
     }, timeOut)
   }
 
@@ -86,7 +91,13 @@ class Articles {
       let div = document.createElement('div')
       div.innerHTML = postEl
 
-      this.articles.appendChild(div.firstChild);
+      if (domElement) {
+        domElement.classList.remove(classNames.isEntering)
+        domElement.setAttribute('href', post.link.url)
+        domElement.getElementsByClassName(classNames.nextArticle)[0].innerHTML = div.getElementsByClassName(classNames.currentArticle)[0].innerHTML
+      } else {
+        this.articles.appendChild(div.firstChild);
+      }
 
       resolve(post.fields.imageUrl)
     })

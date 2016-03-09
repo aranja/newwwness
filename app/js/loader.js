@@ -11,6 +11,7 @@ class Loader {
     this.hasBeenFilled = false
     this.load('new')
     this.rows = 1
+    this.reloading = false
     window.addEventListener('scroll', this.scrollHandler.bind(this))
     window.addEventListener('mousewheel', this.wheelHandler.bind(this))
   }
@@ -18,8 +19,10 @@ class Loader {
   start() {
   }
 
-  stop() {
-    Articles.isLoaded()
+  stop(collection) {
+    //if (collection == 'new') {
+      Articles.isLoaded(collection)
+    //}
   }
 
   refreshHandler() {
@@ -30,15 +33,22 @@ class Loader {
     let offset = (document.all ? iebody.scrollTop : pageYOffset)
 
     if (offset > -190 + (370 * (this.rows - 1))) {
-      this.load({exclude: this.ids, skip: this.rows * 4})
+      this.load({exclude: this.ids, limit: 4, skip: (this.rows - 1) * 4})
       this.rows++
     }
   }
 
   wheelHandler(event) {
-    if (event.wheelDelta > 40) {
-      // this.load('new');
-      // this.rows = 1;
+    if (pageYOffset == 0 && !this.reloading && event.wheelDelta > 40) {
+      this.reloading = true
+      this.ids = []
+      this.rows = 1
+      this.load('new')
+
+      clearTimeout(this.timeout)
+      this.timeout = setTimeout(function() {
+        this.reloading = false
+      }.bind(this), 1000)
     }
   }
 
@@ -53,14 +63,16 @@ class Loader {
       let length = data.items.length
 
       for (let i = 0; i < 4 && i < length; i++) {
-        let rand = 0;
+        let rand = 0,
+            replace = false
 
         if (params == 'new') {
           rand = Math.floor(Math.random() * data.items.length)
           this.ids.push(data.items[rand].sys.id)
+          replace = true
         }
 
-        this.loadPost(data.items[rand], i)
+        this.loadPost(data.items[rand], i, replace)
         data.items.splice(rand, 1)
       }
 
@@ -68,9 +80,9 @@ class Loader {
     }, this.errorHandler)
   }
 
-  loadPost(post, i) {
+  loadPost(post, i, replace) {
     this.images.push(new Promise((resolve, reject) => {
-      Articles.renderPost(post, null)
+      Articles.renderPost(post, replace ? Articles.get(i) : null)
         .then(src => {
           let image = new Image()
           image.addEventListener('load', () => resolve())
@@ -81,8 +93,8 @@ class Loader {
     return post
   }
 
-  waitForImages() {
-    return Promise.all(this.images).then(() => this.stop())
+  waitForImages(collection) {
+    return Promise.all(this.images).then(() => this.stop(collection))
   }
 
   populateImages(data) {
@@ -102,7 +114,7 @@ class Loader {
   load(collection) {
     Articles.isNotLoaded()
     this.start()
-    this.loadData(collection).then(() => this.waitForImages())
+    this.loadData(collection).then(() => this.waitForImages(collection))
   }
 }
 
