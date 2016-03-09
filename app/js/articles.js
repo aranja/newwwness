@@ -23,12 +23,12 @@ class Articles {
     this.articles.innerHTML = ''
   }
 
-  isLoaded(collection) {
+  isLoaded(params) {
     Event.animationEnd(this.get(this.articles.children.length - 1), () => {
       this.editPosts(post => post.classList.remove(classNames.isEntering))
     })
 
-    if (collection == 'new' && this.hasArticles) {
+    if (params.type == 'shuffle' && this.hasArticles) {
       this.editPosts(this.transitionPost.bind(this))
     }
 

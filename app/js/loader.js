@@ -8,8 +8,10 @@ class Loader {
     this.el = document.getElementById('loader')
     this.images = []
     this.ids = []
+    this.data = []
+    this.dataAvailable = []
     this.hasBeenFilled = false
-    this.load('new')
+    this.load({type: 'shuffle', shuffleWithin: 20})
     this.rows = 1
     this.reloading = false
     window.addEventListener('scroll', this.scrollHandler.bind(this))
@@ -23,69 +25,110 @@ class Loader {
     Articles.isLoaded(collection)
   }
 
-  refreshHandler() {
-    this.load({exclude: this.ids})
-  }
-
   scrollHandler() {
     let offset = (document.all ? iebody.scrollTop : pageYOffset)
     document.getElementsByTagName('header')[0].style.opacity = 1 - offset / (window.innerHeight / 4 - 100)
 
     if (offset > -190 + (370 * (this.rows - 1))) {
-      this.load({exclude: this.ids, limit: 4, skip: (this.rows - 1) * 4})
+      this.load({
+        type: 'normal',
+        skip: this.data.length
+      })
       this.rows++
     }
   }
 
   wheelHandler(event) {
     if (pageYOffset == 0 && !this.reloading && event.wheelDelta > 40) {
-      this.reloading = true
-      this.ids = []
       this.rows = 1
-      this.load('new')
+      this.load({
+        type: 'shuffle'
+      })
 
-      clearTimeout(this.timeout)
-      this.timeout = setTimeout(function() {
-        this.reloading = false
-      }.bind(this), 1000)
+      this.reloadingTime()
     }
 
     if (pageYOffset > 0) {
-      this.reloading = true;
+      this.reloadingTime()
+    }
+  }
 
-      clearTimeout(this.timeout)
+  reloadingTime() {
+    this.reloading = true
+
+    clearTimeout(this.timeout)
       this.timeout = setTimeout(function() {
         this.reloading = false
       }.bind(this), 1000)
-    }
   }
 
   errorHandler(error) {
     console.log(error)
   }
 
+  load(params) {
+    this.loadData(params).then(() => this.waitForImages(params))
+  }
+
   loadData(params) {
-    return NewwwnessApi.load(params).then(data => {
-      this.populateImages(data)
+    let ret = null
 
-      let length = data.items.length
+    if (params.type == 'shuffle' && this.data.length > 3) {
+      this.dataAvailable = this.data.slice(0);
+    }
 
-      for (let i = 0; i < 4 && i < length; i++) {
-        let rand = 0,
-            replace = false
+    if (this.dataAvailable.length > 3) {
+      this.addRow(params.type == 'shuffle', params.shuffleWithin)
+      ret = new Promise(function(resolve, reject) {
+        resolve(1);
+      })
+    }
+    else {
+      ret = NewwwnessApi.load(params).then(data => {
+        this.populateImages(data)
+        this.data = this.data.concat(data.items)
+        this.dataAvailable = this.dataAvailable.concat(data.items)
 
-        if (params == 'new') {
-          rand = Math.floor(Math.random() * data.items.length)
-          this.ids.push(data.items[rand].sys.id)
-          replace = true
+        this.addRow(params.type == 'shuffle', params.shuffleWithin)
+
+        return data
+      }, this.errorHandler)
+    }
+
+    return ret
+  }
+
+  addRow(shuffle, shuffleWithin) {
+    for (let i = 0; i < 4 && this.dataAvailable.length > 0; i++) {
+      let rand = 0,
+          randId = 0,
+          max = 20,
+          replace = false
+
+      if (shuffle) {
+        max = shuffleWithin === undefined ||
+                shuffleWithin > this.dataAvailable.length ?
+                this.dataAvailable.length : shuffleWithin
+        rand = Math.floor(Math.random() * max)
+
+        randId = this.dataAvailable[rand].sys.id
+        if (this.ids.indexOf(randId) > -1) {
+          this.dataAvailable.splice(rand, 1)
+          i--
+          continue
         }
 
-        this.loadPost(data.items[rand], i, replace)
-        data.items.splice(rand, 1)
+        this.ids.push(randId)
+        replace = true
       }
 
-      return data
-    }, this.errorHandler)
+      this.loadPost(this.dataAvailable[rand], i, replace)
+      this.dataAvailable.splice(rand, 1)
+    }
+
+    if (this.ids.length > 4) {
+      this.ids.splice(0, this.ids.length - 4)
+    }
   }
 
   loadPost(post, i, replace) {
@@ -101,8 +144,8 @@ class Loader {
     return post
   }
 
-  waitForImages(collection) {
-    return Promise.all(this.images).then(() => this.stop(collection))
+  waitForImages(params) {
+    return Promise.all(this.images).then(() => this.stop(params))
   }
 
   populateImages(data) {
@@ -117,12 +160,6 @@ class Loader {
         }
       }
     }
-  }
-
-  load(collection) {
-    Articles.isNotLoaded()
-    this.start()
-    this.loadData(collection).then(() => this.waitForImages(collection))
   }
 }
 

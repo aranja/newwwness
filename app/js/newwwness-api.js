@@ -9,13 +9,7 @@ class NewwwnessApi {
   load(params) {
     this.additional = '&order=-fields.created&content_type=article'
 
-    if (params.exclude) {
-      this.additional += '&sys.id%5Bnin%5D=' + params.exclude
-    }
-
-    if (params.limit) {
-      this.additional += '&limit=' + params.limit
-    }
+    //this.additional += '&limit=20'
 
     if (params.skip) {
       this.additional += '&skip=' + params.skip
