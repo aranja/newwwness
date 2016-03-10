@@ -26,11 +26,15 @@ class Articles {
 
   isLoaded(params) {
     Event.animationEnd(this.get(this.articles.children.length - 1), () => {
-      this.editPosts(post => post.classList.remove(classNames.isEntering))
+      requestAnimationFrame(() => {
+        this.editPosts(post => post.classList.remove(classNames.isEntering))
+      })
     })
 
     if (params.type == 'shuffle' && this.hasArticles) {
-      this.editPosts(this.transitionPost.bind(this))
+      requestAnimationFrame(() => {
+        this.editPosts(this.transitionPost.bind(this))
+      })
     }
 
     this.hasArticles = true
