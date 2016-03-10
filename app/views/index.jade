@@ -54,11 +54,14 @@ html
   body(data-extension=extension)
     .Layout
 
-      header.Layout-header.Header
+      header.Layout-header#header.Header
         .Header-logo
 
       main.Layout-main
         #articles.Articles
+
+      .Layout-top
+        a#backToTop Top
 
     if prod
       script(src="js/bundle.js")

@@ -1,0 +1,51 @@
+.Layout-top {
+  bottom: 18px;
+  position: fixed;
+  right: 22px;
+}
+
+#backToTop {
+  color: #969595;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: normal;
+  letter-spacing: 1px;
+  opacity: 0;
+  padding: 5px 20px 5px 5px;
+  position: relative;
+  text-transform: uppercase;
+
+  &:hover {
+    &:before {
+      transform: translate3d(0, -3px, 0) rotate(45deg);
+    }
+
+    &:after {
+      transform: translate3d(0, -3px, 0) rotate(-45deg);
+    }
+  }
+
+  &:before,
+  &:after {
+    background: #777;
+    content: '';
+    display: block;
+    height: 1px;
+    position: absolute;
+    transform: translate3d(0, -3px, 0);
+    transition: transform .15s;
+    width: 6px;
+  }
+
+  &:before {
+    top: 10px;
+    transform: rotate(45deg);
+    right: 0;
+  }
+
+  &:after {
+    top: 10px;
+    transform: rotate(-45deg);
+    right: 4px;
+  }
+}

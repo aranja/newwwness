@@ -6,6 +6,7 @@ class Loader {
   constructor() {
     Articles.destroy()
     this.el = document.getElementById('loader')
+    this.backToTop = document.getElementById('backToTop')
     this.images = []
     this.ids = []
     this.data = []
@@ -14,8 +15,12 @@ class Loader {
     this.load({type: 'shuffle', shuffleWithin: 20})
     this.rows = 1
     this.reloading = false
+
+    window.scrollTo(0, 0)
     window.addEventListener('scroll', this.scrollHandler.bind(this))
     window.addEventListener('mousewheel', this.wheelHandler.bind(this))
+
+    this.backToTop.addEventListener('click', this.topHandler.bind(this))
   }
 
   start() {
@@ -27,9 +32,10 @@ class Loader {
 
   scrollHandler() {
     let offset = (document.all ? iebody.scrollTop : pageYOffset)
-    document.getElementsByTagName('header')[0].style.opacity = 1 - offset / (window.innerHeight / 4 - 100)
+    document.getElementById('header').style.opacity = 1 - offset / (window.innerHeight / 4 - 100)
+    document.getElementById('backToTop').style.opacity = offset / (window.innerHeight / 4 - 100)
 
-    if (offset > -190 + (370 * (this.rows - 1))) {
+    if (offset > 5 + (370 * (this.rows - 1))) {
       this.load({
         type: 'normal',
         skip: this.data.length
@@ -155,6 +161,29 @@ class Loader {
           data.items[i].fields.imageUrl = data.includes.Asset[j].fields.file.url
         }
       }
+    }
+  }
+
+  topHandler() {
+    this.scrollToTop(500)
+  }
+
+  scrollToTop(scrollDuration) {
+    const   scrollHeight = window.scrollY,
+            scrollStep = Math.PI / ( scrollDuration / 15 ),
+            cosParameter = scrollHeight / 2;
+    var     scrollCount = 0,
+            scrollMargin;
+    requestAnimationFrame(step);
+    function step () {
+      setTimeout(function() {
+        if ( window.scrollY != 0 ) {
+          requestAnimationFrame(step);
+          scrollCount = scrollCount + 1;
+          scrollMargin = cosParameter - cosParameter * Math.cos( scrollCount * scrollStep );
+          window.scrollTo( 0, ( scrollHeight - scrollMargin ) );
+        }
+      }, 15 );
     }
   }
 }
