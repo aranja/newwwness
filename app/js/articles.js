@@ -25,16 +25,14 @@ class Articles {
   }
 
   isLoaded(params) {
-    Event.animationEnd(this.get(this.articles.children.length - 1), () => {
-      requestAnimationFrame(() => {
-        this.editPosts(post => post.classList.remove(classNames.isEntering))
-      })
+    Event.animationEnd(this.get(this.articles.children.length - 1), (i) => {
+      let nodeList = Array.prototype.slice.call(this.articles.children)
+      let max = nodeList.indexOf(i)
+      this.editPosts(post => post.classList.remove(classNames.isEntering), max)
     })
 
     if (params.type == 'shuffle' && this.hasArticles) {
-      requestAnimationFrame(() => {
-        this.editPosts(this.transitionPost.bind(this))
-      })
+      requestAnimationFrame(() => this.editPosts(this.transitionPost.bind(this), this.articles.children.length))
     }
 
     this.hasArticles = true
@@ -80,12 +78,11 @@ class Articles {
   }
 
   imageLoaded(index) {
-    //console.log(index)
     this.articles.children[index].classList.add(classNames.isImageLoaded)
   }
 
-  editPosts(cb) {
-    for (let i = 0; i < this.articles.children.length; i++) {
+  editPosts(cb, max) {
+    for (let i = 0; i < max; i++) {
       cb(this.get(i), i)
     }
   }

@@ -138,9 +138,9 @@ class Loader {
   }
 
   loadPost(post, i, replace) {
-    //this.images.push(new Promise((resolve, reject) => {
-    Articles.renderPost(post, replace ? Articles.get(i) : null)
-    //}))
+    requestAnimationFrame(() => {
+      Articles.renderPost(post, replace ? Articles.get(i) : null)
+    })
 
     return post
   }
