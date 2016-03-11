@@ -88,12 +88,18 @@ class Articles {
   }
 
   renderPost(post, domElement) {
-    post.link = {
-      url: post.fields.link,
-      text: post.fields.link.split('//')[1].split('/')[0].replace('www.', '')
+    if (post.fields.link) {
+      post.link = {
+        url: post.fields.link,
+        text: post.fields.link.split('//')[1].split('/')[0].replace('www.', '')
+      }
     }
 
-    let postEl = template({post, extension: this.inExtension})
+    let postEl = template({post,
+      extension: this.inExtension,
+      type: post.fields.type
+    })
+
     let div = document.createElement('div')
     div.innerHTML = postEl
     let i = 0
@@ -107,10 +113,11 @@ class Articles {
       i = this.articles.childNodes.length - 1
     }
 
-    let image = new Image()
-    image.addEventListener('load', () => this.imageLoaded(i))
-    image.src = post.fields.imageUrl
-
+    if (post.fields.image) {
+      let image = new Image()
+      image.addEventListener('load', () => this.imageLoaded(i))
+      image.src = post.fields.image
+    }
   }
 }
 

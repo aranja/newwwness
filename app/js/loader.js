@@ -15,6 +15,7 @@ class Loader {
     this.load({type: 'shuffle', shuffleWithin: 20})
     this.rows = 1
     this.reloading = false
+    this.dateParts = []
 
     window.scrollTo(0, 0)
     window.addEventListener('scroll', this.scrollHandler.bind(this))
@@ -91,7 +92,6 @@ class Loader {
     }
     else {
       ret = NewwwnessApi.load(params).then(data => {
-        this.populateImages(data)
         this.data = this.data.concat(data.items)
         this.dataAvailable = this.dataAvailable.concat(data.items)
 
@@ -127,6 +127,24 @@ class Loader {
         this.ids.push(randId)
         replace = true
       }
+      else {
+        let dateParts = this.dataAvailable[rand].fields.date.split('-')
+        if (dateParts[0] < this.dateParts[0] || dateParts[1] < this.dateParts[1]) {
+          let dateCard = {
+            fields: {
+              type: 'Date',
+              month: this.lookupMonth(parseInt(dateParts[1])),
+              year: dateParts[0]
+            }
+          }
+          this.loadPost(dateCard, -1, false)
+
+          this.dateParts = dateParts
+          continue
+        }
+
+        this.dateParts = dateParts
+      }
 
       this.loadPost(this.dataAvailable[rand], i, replace)
       this.dataAvailable.splice(rand, 1)
@@ -147,21 +165,6 @@ class Loader {
 
   waitForImages(params) {
     this.stop(params)
-    //return Promise.all(this.images).then(() => this.stop(params))
-  }
-
-  populateImages(data) {
-    let length = data.items.length
-
-    for (let i = 0; i < length; i++) {
-      let imageId = data.items[i].fields.image.sys.id;
-
-      for (let j = 0; j < data.includes.Asset.length; j++) {
-        if (data.includes.Asset[j].sys.id == imageId) {
-          data.items[i].fields.imageUrl = data.includes.Asset[j].fields.file.url
-        }
-      }
-    }
   }
 
   topHandler() {
@@ -185,6 +188,25 @@ class Loader {
         }
       }, 15 );
     }
+  }
+
+  lookupMonth(index) {
+    let months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
+    ]
+
+    return months[index - 1]
   }
 }
 

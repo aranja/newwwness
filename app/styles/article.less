@@ -219,6 +219,74 @@
   }
 }
 
+.Article-date {
+  background: #169fe8;
+  text-align: center;
+
+  &:nth-child(4n+4) {
+    .Article-title {
+      &:before {
+        bottom: -38px;
+        height: 55px;
+        transform: none;
+        width: 1px;
+      }
+
+      &:after {
+        bottom: -35px;
+        left: 120px;
+        transform: rotate(135deg);
+      }
+    }
+  }
+
+  .Article-current {
+    align-items: center;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+  }
+
+  .Article-title {
+    box-sizing: border-box;
+    padding: 1rem 0 2rem;
+    position: relative;
+    width: 100%;
+
+    &:before {
+      background: #fff;
+      content: '';
+      height: 1px;
+      position: absolute;
+      transform: translate3d(-50%, 0, 0);
+      width: 55px;
+      bottom: -10px;
+      left: 50%;
+    }
+
+    &:after {
+      border-top: solid 1px #fff;
+      border-right: solid 1px #fff;
+      bottom: -20px;
+      content: '';
+      height: 20px;
+      left: 133px;
+      position: absolute;
+      transform: rotate(45deg);
+      width: 20px;
+    }
+  }
+
+  .Article-year {
+    font: 80px 'kepler-std', serif;
+  }
+
+  .Article-month {
+    font: 20px 'kepler-std', serif;;
+    text-transform: uppercase;
+  }
+}
+
 /**
  * Triggers
  * Hover, Focus, Active, etc.
