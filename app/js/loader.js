@@ -33,8 +33,10 @@ class Loader {
 
   scrollHandler() {
     let offset = (document.all ? iebody.scrollTop : pageYOffset)
-    document.getElementById('header').style.opacity = 1 - offset / (window.innerHeight / 4 - 100)
-    document.getElementById('backToTop').style.opacity = offset / (window.innerHeight / 4 - 100)
+    if (offset < 500) {
+      document.getElementById('header').style.opacity = 1 - offset / (window.innerHeight / 4 - 100)
+      document.getElementById('backToTop').style.opacity = offset / (window.innerHeight / 4 - 100)
+    }
 
     if (offset > 5 + (370 * (this.rows - 1))) {
       this.load({
@@ -180,7 +182,7 @@ class Loader {
     requestAnimationFrame(step);
     function step () {
       setTimeout(function() {
-        if ( window.scrollY != 0 ) {
+        if ( window.scrollY > 10 ) {
           requestAnimationFrame(step);
           scrollCount = scrollCount + 1;
           scrollMargin = cosParameter - cosParameter * Math.cos( scrollCount * scrollStep );
