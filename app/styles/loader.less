@@ -1,9 +1,19 @@
 .Loader {
   cursor: pointer;
   height: 32px;
+  left: 50%;
   margin: 35px auto;
-  position: relative;
+  opacity: 1;
+  position: absolute;
+  top: 50%;
+  top: 50vh;
+  transform: translate3d(-50%, -50%, 0);
+  transition: opacity .3s;
   width: 100px;
+
+  body.is-loaded & {
+    opacity: 0;
+  }
 }
 
 .Loader:before {
