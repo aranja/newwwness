@@ -6,7 +6,7 @@ class Loader {
   constructor() {
     Articles.destroy()
     this.el = document.getElementById('loader')
-    this.backToTop = document.getElementById('backToTop')
+    this.limit = 100
     this.images = []
     this.ids = []
     this.data = []
@@ -20,8 +20,6 @@ class Loader {
     window.scrollTo(0, 0)
     window.addEventListener('scroll', this.scrollHandler.bind(this))
     window.addEventListener('mousewheel', this.wheelHandler.bind(this))
-
-    this.backToTop.addEventListener('click', this.topHandler.bind(this))
   }
 
   start() {
@@ -32,23 +30,28 @@ class Loader {
   }
 
   scrollHandler() {
-    let offset = (document.all ? iebody.scrollTop : pageYOffset)
-    if (offset < 500) {
-      document.getElementById('header').style.opacity = 1 - offset / (window.innerHeight / 4 - 100)
-      document.getElementById('backToTop').style.opacity = offset / (window.innerHeight / 4 - 100)
+
+    if (pageYOffset < 500) {
+      document.getElementById('header').style.opacity = 1 - pageYOffset / (window.innerHeight / 4 - 100)
+      document.getElementById('backToTop').style.opacity = pageYOffset / (window.innerHeight / 4 - 100)
     }
 
-    if (offset > 5 + (370 * (this.rows - 1))) {
+    if (pageYOffset > 5 + (370 * (this.rows - 1))) {
       this.load({
         type: 'normal',
         skip: this.data.length
       })
       this.rows++
     }
+
   }
 
   wheelHandler(event) {
-    if (pageYOffset == 0 && !this.reloading && event.wheelDelta > 40) {
+
+    if (pageYOffset > 0) {
+      this.reloadingTime()
+    }
+    else if (pageYOffset == 0 && !this.reloading && event.wheelDelta > 40) {
       this.rows = 1
       this.load({
         type: 'shuffle'
@@ -57,29 +60,27 @@ class Loader {
       this.reloadingTime()
     }
 
-    if (pageYOffset > 0) {
-      this.reloadingTime()
-    }
   }
 
   reloadingTime() {
     this.reloading = true
 
     clearTimeout(this.timeout)
-      this.timeout = setTimeout(function() {
-        this.reloading = false
-      }.bind(this), 1000)
-  }
-
-  errorHandler(error) {
-    console.log(error)
+    this.timeout = setTimeout(function() {
+      this.reloading = false
+    }.bind(this), 1000)
   }
 
   load(params) {
-    this.loadData(params).then(() => this.waitForImages(params))
+    this.loadData(
+      () => this.addRow(params.type == 'shuffle', params.shuffleWithin),
+      params
+    ).then(
+      () => this.stop(params)
+    )
   }
 
-  loadData(params) {
+  loadData(cb, params) {
     let ret = null
 
     if (params.type == 'shuffle' && this.data.length > 3) {
@@ -87,39 +88,61 @@ class Loader {
     }
 
     if (this.dataAvailable.length > 3) {
-      this.addRow(params.type == 'shuffle', params.shuffleWithin)
-      ret = new Promise(function(resolve, reject) {
-        resolve(1);
+      requestAnimationFrame(() => {
+        cb()
       })
     }
     else {
-      ret = NewwwnessApi.load(params).then(data => {
-        this.data = this.data.concat(data.items)
-        this.dataAvailable = this.dataAvailable.concat(data.items)
 
-        this.addRow(params.type == 'shuffle', params.shuffleWithin)
+      if (!window.localStorage.newwwnessData ||
+          !window.localStorage.newwwnessExpires ||
+          new Date().getTime() > window.localStorage.newwwnessExpires ||
+          (this.data.length > 0 && this.data.length != window.localStorage.newwwnessTotal)) {
 
-        return data
-      }, this.errorHandler)
+        ret = NewwwnessApi.load(params).then(data => {
+          this.data = this.data.concat(data.items)
+          this.dataAvailable = this.dataAvailable.concat(data.items)
+
+          window.localStorage.setItem('newwwnessData',
+            JSON.stringify(this.data))
+          window.localStorage.setItem('newwwnessTotal',
+            (this.limit ? this.limit : data.total))
+          window.localStorage.setItem('newwwnessExpires',
+            new Date(+new Date() + 86400000).getTime())
+
+          cb()
+        }.bind(this), this.errorHandler)
+
+      }
+      else {
+
+        if (this.data.length == 0) {
+          this.data = JSON.parse(window.localStorage.newwwnessData)
+          this.dataAvailable = JSON.parse(window.localStorage.newwwnessData)
+        }
+
+        cb()
+
+      }
     }
 
-    return ret
+    return ret || new Promise(function(resolve, reject) {
+      resolve(1);
+    })
   }
 
   addRow(shuffle, shuffleWithin) {
     for (let i = 0; i < 4 && this.dataAvailable.length > 0; i++) {
       let rand = 0,
-          randId = 0,
-          max = 20,
           replace = false
 
       if (shuffle) {
-        max = shuffleWithin === undefined ||
+        let max = shuffleWithin === undefined ||
               shuffleWithin > this.dataAvailable.length ?
                 this.dataAvailable.length : shuffleWithin
         rand = Math.floor(Math.random() * max)
 
-        randId = this.dataAvailable[rand].sys.id
+        let randId = this.dataAvailable[rand].sys.id
         if (this.ids.indexOf(randId) > -1) {
           this.dataAvailable.splice(rand, 1)
           i--
@@ -129,7 +152,8 @@ class Loader {
         this.ids.push(randId)
         replace = true
       }
-      else {
+      else if (this.dataAvailable.length > 1) {
+
         let dateParts = this.dataAvailable[rand].fields.date.split('-')
         if (dateParts[0] < this.dateParts[0] || dateParts[1] < this.dateParts[1]) {
           let dateCard = {
@@ -140,6 +164,11 @@ class Loader {
             }
           }
           this.loadPost(dateCard, -1, false)
+
+          if (this.limit) {
+            // Remove cards so we have even row at bottom
+            this.dataAvailable.pop()
+          }
 
           this.dateParts = dateParts
           continue
@@ -158,38 +187,11 @@ class Loader {
   }
 
   loadPost(post, i, replace) {
-    requestAnimationFrame(() => {
+    //requestAnimationFrame(() => {
       Articles.renderPost(post, replace ? Articles.get(i) : null)
-    })
+    //})
 
     return post
-  }
-
-  waitForImages(params) {
-    this.stop(params)
-  }
-
-  topHandler() {
-    this.scrollToTop(500)
-  }
-
-  scrollToTop(scrollDuration) {
-    const   scrollHeight = window.scrollY,
-            scrollStep = Math.PI / ( scrollDuration / 15 ),
-            cosParameter = scrollHeight / 2;
-    var     scrollCount = 0,
-            scrollMargin;
-    requestAnimationFrame(step);
-    function step () {
-      setTimeout(function() {
-        if ( window.scrollY > 10 ) {
-          requestAnimationFrame(step);
-          scrollCount = scrollCount + 1;
-          scrollMargin = cosParameter - cosParameter * Math.cos( scrollCount * scrollStep );
-          window.scrollTo( 0, ( scrollHeight - scrollMargin ) );
-        }
-      }, 15 );
-    }
   }
 
   lookupMonth(index) {
@@ -209,6 +211,10 @@ class Loader {
     ]
 
     return months[index - 1]
+  }
+
+  errorHandler(error) {
+    console.log(error)
   }
 }
 
