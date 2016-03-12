@@ -49,7 +49,7 @@ class Loader {
   wheelHandler(event) {
 
     if (pageYOffset > 0) {
-      this.reloadingTime()
+      this.reloadingTime(1000)
     }
     else if (pageYOffset == 0 && !this.reloading && event.wheelDelta > 40) {
       this.rows = 1
@@ -57,18 +57,18 @@ class Loader {
         type: 'shuffle'
       })
 
-      this.reloadingTime()
+      this.reloadingTime(2000)
     }
 
   }
 
-  reloadingTime() {
+  reloadingTime(length) {
     this.reloading = true
 
     clearTimeout(this.timeout)
     this.timeout = setTimeout(function() {
       this.reloading = false
-    }.bind(this), 1000)
+    }.bind(this), length)
   }
 
   load(params) {
