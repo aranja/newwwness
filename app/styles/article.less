@@ -5,7 +5,7 @@
 @linkPadding: 6px;
 @opp-Article: ceil((tan(@degree-Article) * @hyp-Article - @linkPadding));
 @adj-Article: ceil((cos(@degree-Article) * @hyp-Article));
-@delay-Article: .15s;
+@delay-Article: .105s;
 @speedRatio-Article: (@hyp-Article / 42px); // Usual height of footer...magic.
 @shuffleSpeed: .9s;
 
@@ -14,6 +14,16 @@
     display: block;
     margin: 0 auto;
     width: 1200px;
+  }
+
+  // Only space for 3
+  @media @fullscreen and (max-width: @fullWidth-4-Articles) {
+    width: 908px;
+  }
+
+  // Only space for 2
+  @media @fullscreen and (max-width: @fullWidth-3-Articles) {
+    width: 616px;
   }
 }
 
@@ -26,11 +36,12 @@
   min-height: 109px;
   overflow: hidden;
   position: relative;
-  width: 260px;
+  width: 100%;
 
   @media @fullscreen {
     margin: 0 0 @margin-Article @margin-Article;
     height: @height-Article;
+    width: 260px;
 
     &:last-of-type {
       margin-right: @margin-Article;
@@ -39,14 +50,14 @@
 
   // Only space for 3
   @media @fullscreen and (max-width: @fullWidth-4-Articles) {
-    &:first-child {
+    &:nth-of-type(3) {
       display: none;
     }
   }
 
   // Only space for 2
   @media @fullscreen and (max-width: @fullWidth-3-Articles) {
-    &:nth-of-type(2) {
+    &:nth-of-type(4) {
       display: none;
     }
   }
@@ -251,15 +262,28 @@
   .Article-title {
     box-sizing: border-box;
     color: #169fe8;
-    padding: 1rem 0 2rem;
+    padding: 1rem 0 0;
     position: relative;
     width: 100%;
 
+    @media @fullscreen {
+      padding: 1rem 0 2rem;
+    }
+
+    &:before,
+    &:after {
+      content: '';
+      display: none;
+      position: absolute;
+
+      @media @fullscreen {
+        display: block;
+      }
+    }
+
     &:before {
       background: #169fe8;
-      content: '';
       height: 1px;
-      position: absolute;
       transform: translate3d(-50%, 0, 0);
       width: 55px;
       bottom: -10px;
@@ -270,10 +294,8 @@
       border-top: solid 1px #169fe8;
       border-right: solid 1px #169fe8;
       bottom: -20px;
-      content: '';
       height: 20px;
       left: 133px;
-      position: absolute;
       transform: rotate(45deg);
       width: 20px;
     }
