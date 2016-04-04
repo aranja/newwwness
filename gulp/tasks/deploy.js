@@ -5,7 +5,7 @@ module.exports = function(gulp, gutil) {
   var version = gutil.env.version;
 
   gulp.task('deploy-appengine', function(cb) {
-    var cmd = 'appcfg.py update --oauth2 api';
+    var cmd = 'goapp deploy api';
     if (version) {
       cmd += ' --version ' + version;
     }
