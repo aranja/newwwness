@@ -6,16 +6,20 @@ class Loader {
   constructor() {
     Articles.destroy()
     this.el = document.getElementById('loader')
+    this.articles = document.getElementById('articles')
     this.limit = 100
     this.images = []
     this.ids = []
     this.data = []
     this.dataAvailable = []
     this.hasBeenFilled = false
-    this.load({type: 'shuffle', shuffleWithin: 20})
     this.rows = 1
     this.reloading = false
     this.dateParts = []
+    this.rowSize = 4;
+    this.load({type: 'shuffle', shuffleWithin: 20})
+
+    this.setSize();
 
     window.scrollTo(0, 0)
     window.addEventListener('scroll', this.scrollHandler.bind(this))
@@ -132,7 +136,7 @@ class Loader {
   }
 
   addRow(shuffle, shuffleWithin) {
-    for (let i = 0; i < 4 && this.dataAvailable.length > 0; i++) {
+    for (let i = 0; i < this.rowSize && this.dataAvailable.length > 0; i++) {
       let rand = 0,
           replace = false
 
@@ -192,6 +196,21 @@ class Loader {
     //})
 
     return post
+  }
+
+  setSize() {
+    if (this.articles.offsetWidth >= 1200) {
+      this.rowSize = 4;
+    }
+    else if (this.articles.offsetWidth >= 908) {
+      this.rowSize = 3;
+    }
+    else if (this.articles.offsetWidth >= 616) {
+      this.rowSize = 2;
+    }
+    else {
+      this.rowSize = 1;
+    }
   }
 
   lookupMonth(index) {
