@@ -24,6 +24,7 @@ class Loader {
     window.scrollTo(0, 0)
     window.addEventListener('scroll', this.scrollHandler.bind(this))
     window.addEventListener('mousewheel', this.wheelHandler.bind(this))
+    window.addEventListener('resize', this.setSize.bind(this));
   }
 
   start() {
@@ -136,7 +137,7 @@ class Loader {
   }
 
   addRow(shuffle, shuffleWithin) {
-    for (let i = 0; i < this.rowSize && this.dataAvailable.length > 0; i++) {
+    for (let i = 0; i < (shuffle ? 4 : this.rowSize) && this.dataAvailable.length > 0; i++) {
       let rand = 0,
           replace = false
 
@@ -199,6 +200,8 @@ class Loader {
   }
 
   setSize() {
+    var oldRowSize = this.rowSize;
+
     if (this.articles.offsetWidth >= 1200) {
       this.rowSize = 4;
     }
@@ -210,6 +213,27 @@ class Loader {
     }
     else {
       this.rowSize = 1;
+    }
+
+    if (this.rowSize != oldRowSize) {
+      if (this.articles.children.length > 4) {
+        this.articles.innerHTML = '';
+
+        document.body.scrollTop = document.documentElement.scrollTop = 0;
+
+        setTimeout(function() {
+          this.rows = 1
+          this.load({
+            type: 'shuffle'
+          })
+        }.bind(this), 50);
+      }
+      else {
+        for (var i = 0; i < this.articles.children.length; i++) {
+          this.articles.children[i].className =
+            this.articles.children[i].className.replace(/\bis-swapping\b/,'');
+        }
+      }
     }
   }
 
