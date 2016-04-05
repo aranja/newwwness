@@ -234,7 +234,10 @@
   background: #fff;
   text-align: center;
 
-  &:nth-child(4n+4) {
+  // Down Arrow
+  .Articles[data-rowsize="4"] &:nth-child(4n+4),
+  .Articles[data-rowsize="3"] &:nth-child(3n+4),
+  .Articles[data-rowsize="2"] &:nth-child(2n+4) {
     .Article-title {
 
       &:before {
@@ -270,6 +273,7 @@
       padding: 1rem 0 2rem;
     }
 
+    // Next Arrow
     &:before,
     &:after {
       content: '';

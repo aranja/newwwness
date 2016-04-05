@@ -214,6 +214,7 @@ class Loader {
     else {
       this.rowSize = 1;
     }
+    this.articles.dataset.rowsize = this.rowSize;
 
     if (this.rowSize != oldRowSize) {
       if (this.articles.children.length > 4) {
