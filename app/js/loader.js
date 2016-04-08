@@ -1,6 +1,11 @@
 import NewwwnessApi from './newwwness-api'
 import Articles from './articles'
 import Event from './event'
+import template from 'templates/end.jade!'
+
+const classNames = {
+  isShuffling: 'is-shuffling'
+}
 
 class Loader {
   constructor() {
@@ -19,7 +24,7 @@ class Loader {
     this.rowSize = 4;
     this.load({type: 'shuffle', shuffleWithin: 20})
 
-    this.setSize();
+    this.setSize()
 
     window.scrollTo(0, 0)
     window.addEventListener('scroll', this.scrollHandler.bind(this))
@@ -30,8 +35,38 @@ class Loader {
   start() {
   }
 
-  stop(collection) {
-    Articles.isLoaded(collection)
+  stop(params) {
+    Articles.isLoaded(params)
+  }
+
+  end() {
+    console.log('here');
+    if (!this.hasBeenFilled) {
+      this.hasBeenFilled = true;
+
+      let postEl = template()
+      let div = document.createElement('div')
+      div.innerHTML = postEl
+
+      this.articles.appendChild(div.firstChild);
+    }
+  }
+
+  clean() {
+    this.rows = 1
+    this.hasBeenFilled = false
+    this.stop({type: 'clean'})
+
+    Array.from(document.getElementsByClassName('Article-end')).forEach((element) => {
+      element.remove()
+    })
+
+    this.dataAvailable = this.data.slice(0)
+    for (let i = 0; i < this.dataAvailable.length; i++) {
+      if (this.ids.indexOf(this.dataAvailable[i].sys.id) > -1) {
+        this.dataAvailable.splice(i, 1)
+      }
+    }
   }
 
   scrollHandler() {
@@ -39,6 +74,10 @@ class Loader {
     if (pageYOffset < 500) {
       document.getElementById('header').style.opacity = 1 - pageYOffset / (window.innerHeight / 4 - 100)
       document.getElementById('backToTop').style.opacity = pageYOffset / (window.innerHeight / 4 - 100)
+
+      if (pageYOffset <= 0 && this.rows > 1) {
+        this.clean()
+      }
     }
 
     if (pageYOffset > 5 + (370 * (this.rows - 1))) {
@@ -57,6 +96,8 @@ class Loader {
       this.reloadingTime(1000)
     }
     else if (pageYOffset == 0 && !this.reloading && event.wheelDelta > 40) {
+      document.body.classList.add(classNames.isShuffling)
+
       this.rows = 1
       this.load({
         type: 'shuffle'
@@ -189,12 +230,14 @@ class Loader {
     if (this.ids.length > 4) {
       this.ids.splice(0, this.ids.length - 4)
     }
+
+    if (this.dataAvailable.length == 0) {
+      this.end();
+    }
   }
 
   loadPost(post, i, replace) {
-    //requestAnimationFrame(() => {
-      Articles.renderPost(post, replace ? Articles.get(i) : null)
-    //})
+    Articles.renderPost(post, replace ? Articles.get(i) : null)
 
     return post
   }

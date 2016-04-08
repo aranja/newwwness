@@ -9,13 +9,15 @@ const classNames = {
   isSwapping: 'is-swapping',
   isDoneSwapping: 'is-doneSwapping',
   isLoaded: 'is-loaded',
-  isImageLoaded: 'is-imageLoaded'
+  isImageLoaded: 'is-imageLoaded',
+  isShuffling: 'is-shuffling'
 }
 
 class Articles {
   constructor(data) {
     document.body.classList.add(classNames.isLoaded)
     this.articles = document.getElementById('articles')
+    this.loader = document.getElementById('loader')
     this.inExtension = document.body.getAttribute('data-extension') != null
     this.hasArticles = false
   }
@@ -29,10 +31,14 @@ class Articles {
       let nodeList = Array.prototype.slice.call(this.articles.children)
       let max = nodeList.indexOf(i)
       this.editPosts(post => post.classList.remove(classNames.isEntering), max)
+      this.loader.classList.add(classNames.isShuffling)
     })
 
     if (params.type == 'shuffle' && this.hasArticles) {
       requestAnimationFrame(() => this.editPosts(this.transitionPost.bind(this), this.articles.children.length))
+    }
+    else if (params.type == 'clean' && this.hasArticles) {
+      requestAnimationFrame(() => this.editPosts(this.transitionPost.bind(this), this.articles.children.length, 4))
     }
 
     this.hasArticles = true
@@ -66,6 +72,10 @@ class Articles {
       else {
         post.remove()
       }
+
+      setTimeout(function() {
+        document.body.classList.remove(classNames.isShuffling)
+      }, 900);
     }, timeOut)
   }
 
@@ -81,8 +91,8 @@ class Articles {
     this.articles.children[index].classList.add(classNames.isImageLoaded)
   }
 
-  editPosts(cb, max) {
-    for (let i = 0; i < max; i++) {
+  editPosts(cb, max, start = 0) {
+    for (let i = start; i < max; i++) {
       cb(this.get(i), i)
     }
   }

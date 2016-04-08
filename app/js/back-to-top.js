@@ -24,6 +24,9 @@ class BackToTop {
           scrollMargin = cosParameter - cosParameter * Math.cos( scrollCount * scrollStep );
           window.scrollTo( 0, ( scrollHeight - scrollMargin ) );
         }
+        else {
+          window.scrollTo( 0, 0 );
+        }
       }, 15 );
     }
   }

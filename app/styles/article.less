@@ -316,6 +316,33 @@
   }
 }
 
+.Article-end {
+  background: none;
+  clear: both;
+  height: auto;
+  margin: 175px 0 -175px;
+  padding: 0;
+  text-align: center;
+  width: 100%;
+
+  h1 {
+    color: #969595;
+    font: 60px 'kepler-std', serif;
+    position: relative;
+
+    &:before {
+      background: #ccc;
+      content: '';
+      height: 1px;
+      left: 50%;
+      position: absolute;
+      top: -30px;
+      transform: translate3d(-50%, 0, 0);
+      width: 40px;
+    }
+  }
+}
+
 /**
  * Triggers
  * Hover, Focus, Active, etc.
@@ -382,7 +409,7 @@
   opacity: 0;
 
   .is-loaded & {
-    animation-duration: .5s;
+    animation-duration: .35s;
     animation-fill-mode: forwards;
     animation-name: appear-Article;
   }
@@ -435,19 +462,19 @@
   &:nth-of-type(n+5) {
     animation: none;
     opacity: 0;
-    transition: (@shuffleSpeed / 2) opacity 0s;
+    transition: (@shuffleSpeed / 2.5) opacity 0s;
   }
 }
 
 .Article.is-doneSwapping {
   .Article-current {
     opacity: 1;
-    transition: (@shuffleSpeed / 2) opacity 0s;
+    transition: (@shuffleSpeed / 2.5) opacity 0s;
   }
 
   .Article-title,
   .Article-footer {
-    transition: (@shuffleSpeed / 2) transform 0s;
+    transition: (@shuffleSpeed / 2.5) transform 0s;
   }
 
   .Article-title {
