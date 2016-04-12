@@ -10,6 +10,8 @@
 @shuffleSpeed: .9s;
 
 .Articles {
+  display: inline-block;
+
   @media @fullscreen {
     display: block;
     margin: 0 auto;
@@ -22,7 +24,8 @@
   }
 
   // Only space for 2
-  @media @fullscreen and (max-width: @fullWidth-3-Articles) {
+  @media @fullscreen and (max-width: @fullWidth-3-Articles) and (max-height: 500px) {
+    margin-top: 100px;
     width: 616px;
   }
 }
@@ -320,10 +323,14 @@
   background: none;
   clear: both;
   height: auto;
-  margin: 175px 0 -175px;
+  margin: 75px 0 -125px;
   padding: 0;
   text-align: center;
   width: 100%;
+
+  @media @fullscreen {
+    margin: 175px 0 -175px;
+  }
 
   h1 {
     color: #969595;
@@ -414,9 +421,11 @@
     animation-name: appear-Article;
   }
 
-  &:nth-of-type(4n+2) { animation-delay: .1s; }
-  &:nth-of-type(4n+3) { animation-delay: .2s; }
-  &:nth-of-type(4n+4) { animation-delay: .3s; }
+  @media @fullscreen {
+    &:nth-of-type(4n+2) { animation-delay: .1s; }
+    &:nth-of-type(4n+3) { animation-delay: .2s; }
+    &:nth-of-type(4n+4) { animation-delay: .3s; }
+  }
 
   @media @fullscreen and (max-width: @fullWidth-4-Articles) {
     &:nth-of-type(3n+2) { animation-delay: 0s; }

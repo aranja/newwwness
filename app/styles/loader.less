@@ -11,6 +11,10 @@
   transition: opacity .3s;
   width: 100px;
 
+  @media @fullscreen and (max-width: @fullWidth-3-Articles) and (max-height: 500px) {
+    bottom: 70px;
+  }
+
   body.is-loaded & {
     opacity: 0;
   }

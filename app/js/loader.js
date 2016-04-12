@@ -20,7 +20,7 @@ class Loader {
     this.hasBeenFilled = false
     this.rows = 1
     this.reloading = false
-    this.dateParts = []
+    this.lastDateParts = []
     this.rowSize = 4;
     this.load({type: 'shuffle', shuffleWithin: 20})
 
@@ -40,7 +40,6 @@ class Loader {
   }
 
   end() {
-    console.log('here');
     if (!this.hasBeenFilled) {
       this.hasBeenFilled = true;
 
@@ -55,6 +54,7 @@ class Loader {
   clean() {
     this.rows = 1
     this.hasBeenFilled = false
+    this.lastDateParts = []
     this.stop({type: 'clean'})
 
     Array.from(document.getElementsByClassName('Article-end')).forEach((element) => {
@@ -72,15 +72,15 @@ class Loader {
   scrollHandler() {
 
     if (pageYOffset < 500) {
-      document.getElementById('header').style.opacity = 1 - pageYOffset / (window.innerHeight / 4 - 100)
-      document.getElementById('backToTop').style.opacity = pageYOffset / (window.innerHeight / 4 - 100)
+      document.getElementById('header').style.opacity = 1 - pageYOffset / (window.innerHeight / this.rowSize - 100)
+      document.getElementById('backToTop').style.opacity = pageYOffset / (window.innerHeight / this.rowSize - 100)
 
       if (pageYOffset <= 0 && this.rows > 1) {
         this.clean()
       }
     }
 
-    if (pageYOffset > 5 + (370 * (this.rows - 1))) {
+    if (pageYOffset > 5 + ((this.rowSize > 1 ? 370 : 125) * (this.rows - 1))) {
       this.load({
         type: 'normal',
         skip: this.data.length
@@ -201,7 +201,8 @@ class Loader {
       else if (this.dataAvailable.length > 1) {
 
         let dateParts = this.dataAvailable[rand].fields.date.split('-')
-        if (dateParts[0] < this.dateParts[0] || dateParts[1] < this.dateParts[1]) {
+        if (dateParts[0] < this.lastDateParts[0] ||
+            dateParts[1] < this.lastDateParts[1]) {
           let dateCard = {
             fields: {
               type: 'Date',
@@ -216,11 +217,11 @@ class Loader {
             this.dataAvailable.pop()
           }
 
-          this.dateParts = dateParts
+          this.lastDateParts = dateParts
           continue
         }
 
-        this.dateParts = dateParts
+        this.lastDateParts = dateParts
       }
 
       this.loadPost(this.dataAvailable[rand], i, replace)
