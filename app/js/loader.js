@@ -1,71 +1,308 @@
 import NewwwnessApi from './newwwness-api'
 import Articles from './articles'
 import Event from './event'
+import template from 'templates/end.jade!'
+
+const classNames = {
+  isShuffling: 'is-shuffling'
+}
 
 class Loader {
   constructor() {
     Articles.destroy()
     this.el = document.getElementById('loader')
+    this.articles = document.getElementById('articles')
+    this.limit = 100
     this.images = []
+    this.ids = []
+    this.data = []
+    this.dataAvailable = []
     this.hasBeenFilled = false
-    this.load('new')
-    this.el.addEventListener('click', this.refreshHandler.bind(this))
+    this.rows = 1
+    this.reloading = false
+    this.lastDateParts = []
+    this.rowSize = 4;
+    this.load({type: 'shuffle', shuffleWithin: 20})
+
+    this.setSize()
+
+    window.scrollTo(0, 0)
+    window.addEventListener('scroll', this.scrollHandler.bind(this))
+    window.addEventListener('mousewheel', this.wheelHandler.bind(this))
+    window.addEventListener('resize', this.setSize.bind(this));
   }
 
   start() {
-    this.el.classList.add('is-loading')
   }
 
-  stop() {
-    Articles.isLoaded()
-    this.hasBeenFilled = true
-
-    Event.animationIteration(this.el, () => {
-      this.el.classList.remove('is-loading')
-    }, 1000)
+  stop(params) {
+    Articles.isLoaded(params)
   }
 
-  refreshHandler() {
-    this.load('random')
+  end() {
+    if (!this.hasBeenFilled) {
+      this.hasBeenFilled = true;
+
+      let postEl = template()
+      let div = document.createElement('div')
+      div.innerHTML = postEl
+
+      this.articles.appendChild(div.firstChild);
+    }
   }
 
-  errorHandler(error) {
-    console.log(error)
-  }
+  clean() {
+    this.rows = 1
+    this.hasBeenFilled = false
+    this.lastDateParts = []
+    this.stop({type: 'clean'})
 
-  loadData(data) {
-    return NewwwnessApi.load(data).then(data => {
-      let length = data.articles.length
-      for (let i = 0; i < 4 && i < length; i++) {
-        let rand = Math.floor(Math.random() * data.articles.length)
-        this.loadPost(data.articles[rand], i)
-        data.articles.splice(rand, 1)
+    Array.from(document.getElementsByClassName('Article-end')).forEach((element) => {
+      element.remove()
+    })
+
+    this.dataAvailable = this.data.slice(0)
+    for (let i = 0; i < this.dataAvailable.length; i++) {
+      if (this.ids.indexOf(this.dataAvailable[i].sys.id) > -1) {
+        this.dataAvailable.splice(i, 1)
       }
-      return data
-    }, this.errorHandler)
+    }
   }
 
-  loadPost(post, i) {
-    this.images.push(new Promise((resolve, reject) => {
-      Articles.renderPost(post, this.hasBeenFilled ? Articles.get(i) : null)
-        .then(src => {
-          let image = new Image()
-          image.addEventListener('load', () => resolve())
-          image.src = src
-        }, this.errorHandler)
-    }))
+  scrollHandler() {
+
+    if (pageYOffset < 500) {
+      document.getElementById('header').style.opacity = 1 - pageYOffset / (window.innerHeight / this.rowSize - 100)
+      document.getElementById('backToTop').style.opacity = pageYOffset / (window.innerHeight / this.rowSize - 100)
+
+      if (pageYOffset <= 0 && this.rows > 1) {
+        this.clean()
+      }
+    }
+
+    if (pageYOffset > 5 + ((this.rowSize > 1 ? 370 : 125) * (this.rows - 1))) {
+      this.load({
+        type: 'normal',
+        skip: this.data.length
+      })
+      this.rows++
+    }
+
+  }
+
+  wheelHandler(event) {
+
+    if (pageYOffset > 0) {
+      this.reloadingTime(1000)
+    }
+    else if (pageYOffset == 0 && !this.reloading && event.wheelDelta > 40) {
+      document.body.classList.add(classNames.isShuffling)
+
+      this.rows = 1
+      this.load({
+        type: 'shuffle'
+      })
+
+      this.reloadingTime(2000)
+    }
+
+  }
+
+  reloadingTime(length) {
+    this.reloading = true
+
+    clearTimeout(this.timeout)
+    this.timeout = setTimeout(function() {
+      this.reloading = false
+    }.bind(this), length)
+  }
+
+  load(params) {
+    this.loadData(
+      () => this.addRow(params.type == 'shuffle', params.shuffleWithin),
+      params
+    ).then(
+      () => this.stop(params)
+    )
+  }
+
+  loadData(cb, params) {
+    let ret = null
+
+    if (params.type == 'shuffle' && this.data.length > 3) {
+      this.dataAvailable = this.data.slice(0);
+    }
+
+    if (this.dataAvailable.length > 3) {
+      requestAnimationFrame(() => {
+        cb()
+      })
+    }
+    else {
+
+      if (!window.localStorage.newwwnessData ||
+          !window.localStorage.newwwnessExpires ||
+          new Date().getTime() > window.localStorage.newwwnessExpires ||
+          (this.data.length > 0 && this.data.length != window.localStorage.newwwnessTotal)) {
+
+        ret = NewwwnessApi.load(params).then(data => {
+          this.data = this.data.concat(data.items)
+          this.dataAvailable = this.dataAvailable.concat(data.items)
+
+          window.localStorage.setItem('newwwnessData',
+            JSON.stringify(this.data))
+          window.localStorage.setItem('newwwnessTotal',
+            (this.limit ? this.limit : data.total))
+          window.localStorage.setItem('newwwnessExpires',
+            new Date(+new Date() + 86400000).getTime())
+
+          cb()
+        }.bind(this), this.errorHandler)
+
+      }
+      else {
+
+        if (this.data.length == 0) {
+          this.data = JSON.parse(window.localStorage.newwwnessData)
+          this.dataAvailable = JSON.parse(window.localStorage.newwwnessData)
+        }
+
+        cb()
+
+      }
+    }
+
+    return ret || new Promise(function(resolve, reject) {
+      resolve(1);
+    })
+  }
+
+  addRow(shuffle, shuffleWithin) {
+    for (let i = 0; i < (shuffle ? 4 : this.rowSize) && this.dataAvailable.length > 0; i++) {
+      let rand = 0,
+          replace = false
+
+      if (shuffle) {
+        let max = shuffleWithin === undefined ||
+              shuffleWithin > this.dataAvailable.length ?
+                this.dataAvailable.length : shuffleWithin
+        rand = Math.floor(Math.random() * max)
+
+        let randId = this.dataAvailable[rand].sys.id
+        if (this.ids.indexOf(randId) > -1) {
+          this.dataAvailable.splice(rand, 1)
+          i--
+          continue
+        }
+
+        this.ids.push(randId)
+        replace = true
+      }
+      else if (this.dataAvailable.length > 1) {
+
+        let dateParts = this.dataAvailable[rand].fields.date.split('-')
+        if (dateParts[0] < this.lastDateParts[0] ||
+            dateParts[1] < this.lastDateParts[1]) {
+          let dateCard = {
+            fields: {
+              type: 'Date',
+              month: this.lookupMonth(parseInt(dateParts[1])),
+              year: dateParts[0]
+            }
+          }
+          this.loadPost(dateCard, -1, false)
+
+          if (this.limit) {
+            // Remove cards so we have even row at bottom
+            this.dataAvailable.pop()
+          }
+
+          this.lastDateParts = dateParts
+          continue
+        }
+
+        this.lastDateParts = dateParts
+      }
+
+      this.loadPost(this.dataAvailable[rand], i, replace)
+      this.dataAvailable.splice(rand, 1)
+    }
+
+    if (this.ids.length > 4) {
+      this.ids.splice(0, this.ids.length - 4)
+    }
+
+    if (this.dataAvailable.length == 0) {
+      this.end();
+    }
+  }
+
+  loadPost(post, i, replace) {
+    Articles.renderPost(post, replace ? Articles.get(i) : null)
 
     return post
   }
 
-  waitForImages() {
-    return Promise.all(this.images).then(() => this.stop())
+  setSize() {
+    var oldRowSize = this.rowSize;
+
+    if (this.articles.offsetWidth >= 1200) {
+      this.rowSize = 4;
+    }
+    else if (this.articles.offsetWidth >= 908) {
+      this.rowSize = 3;
+    }
+    else if (this.articles.offsetWidth >= 616) {
+      this.rowSize = 2;
+    }
+    else {
+      this.rowSize = 1;
+    }
+    this.articles.dataset.rowsize = this.rowSize;
+
+    if (this.rowSize != oldRowSize) {
+      if (this.articles.children.length > 4) {
+        this.articles.innerHTML = '';
+
+        document.body.scrollTop = document.documentElement.scrollTop = 0;
+
+        setTimeout(function() {
+          this.rows = 1
+          this.load({
+            type: 'shuffle'
+          })
+        }.bind(this), 50);
+      }
+      else {
+        for (var i = 0; i < this.articles.children.length; i++) {
+          this.articles.children[i].className =
+            this.articles.children[i].className.replace(/\bis-swapping\b/,'');
+        }
+      }
+    }
   }
 
-  load(collection) {
-    Articles.isNotLoaded()
-    this.start()
-    this.loadData(collection).then(() => this.waitForImages())
+  lookupMonth(index) {
+    let months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
+    ]
+
+    return months[index - 1]
+  }
+
+  errorHandler(error) {
+    console.log(error)
   }
 }
 

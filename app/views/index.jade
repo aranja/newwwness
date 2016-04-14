@@ -45,7 +45,7 @@ html
 
     link(rel='stylesheet', href='css/main.css')
     script(src="js/modernizr.js")
-    script(src="https://use.typekit.net/zde5igb.js")
+    script(src="https://use.typekit.net/gqg2dmh.js")
     if extension
       // Can't run inline scripts in extension
       script(src="load-typekit.js")
@@ -53,21 +53,18 @@ html
       script try{Typekit.load();}catch(e){}
   body(data-extension=extension)
     .Layout
+
+      header.Layout-header#header.Header
+        .Header-logo
+
       .Layout-loader
         #loader.Loader.is-loading
 
       main.Layout-main
         #articles.Articles
 
-      if !extension
-        .Layout-extensionAd.u-hide(data-check-webstore)
-          a.Button.LoadStagger(href="https://chrome.google.com/webstore/detail/newwwness/bgehdelljbcknhkackefjmceniacejel").
-            Download Chrome Extension
-
-      .Layout-spacer
-      footer.Layout-footer.Footer.LoadStagger.LoadStagger--mobile.LoadStagger--2
-        .Footer-logo
-        p.Footer-attribution Made with &#9829; by <a href="http://upperquad.com/">UQ</a> and <a href="https://aranja.com/">Aranja</a>.
+      .Layout-top
+        a#backToTop Top
 
     if prod
       script(src="js/bundle.js")

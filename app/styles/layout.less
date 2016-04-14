@@ -9,14 +9,17 @@
   }
 
   &-loader {
+    height: 100vh;
     flex: 1;
+    position: absolute;
+    width: 100vw;
   }
 
   &-main {
-    margin: 0 23px;
+    margin: 0 23px 200px;
 
     @media @fullscreen {
-      margin: 0 0 64px 0;
+      margin: ~"calc((100vh - 340px) / 2) 0 40vh 0";
     }
   }
 

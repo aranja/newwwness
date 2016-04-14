@@ -1,11 +1,21 @@
-a.Article.is-entering(href=post.link.url target=(extension ? false : "_blank"))
-  .Article-next
-  .Article-current
-    .Article-image(style="background-image: url(#{post.image});")
-    .Article-title= post.title
-    .Article-footer
-      .Article-footerLink
-        .Article-footerBorderLeft
-        .Article-footerBorderRight
-        .Article-footerText= post.link.text
-        .Article-background
+if type == 'Date'
+  a.Article.Article-date.is-entering
+    .Article-next
+    .Article-current
+      .Article-image
+      .Article-title= post.title
+        .Article-month= post.fields.month
+        .Article-year= post.fields.year
+
+else
+  a.Article.is-entering(href=post.link.url target=(extension ? false : "_blank"))
+    .Article-next
+    .Article-current
+      .Article-image(style="background-image: url(#{post.fields.image});")
+      .Article-title= post.fields.title
+      .Article-footer
+        .Article-footerLink
+          .Article-footerBorderLeft
+          .Article-footerBorderRight
+          .Article-footerText= post.link.text
+          .Article-background

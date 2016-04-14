@@ -1,0 +1,26 @@
+@paddingBottom-Footer: 34px;
+
+.Header {
+  padding: ~"calc((100vh - 340px) / 4 - 18px) 0";
+  width: 100%;
+
+  @media @fullscreen {
+    position: fixed;
+  }
+
+  @media @fullscreen and (max-width: @fullWidth-3-Articles) and (max-height: 500px) {
+    padding-top: 35px;
+  }
+
+  &-logo {
+    background-image: url(img/logo-dark.svg);
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: contain;
+    height: 36px;
+    opacity: 0.44;
+    transform: translateZ(0);
+    transition: .3s transform;
+    width: 100%;
+  }
+}
