@@ -12,6 +12,7 @@ class Loader {
     Articles.destroy()
     this.el = document.getElementById('loader')
     this.articles = document.getElementById('articles')
+    this.logo = document.getElementById('logo')
     this.limit = 100
     this.images = []
     this.ids = []
@@ -30,6 +31,8 @@ class Loader {
     window.addEventListener('scroll', this.scrollHandler.bind(this))
     window.addEventListener('mousewheel', this.wheelHandler.bind(this))
     window.addEventListener('resize', this.setSize.bind(this));
+
+    this.logo.addEventListener('click', this.shuffleCards.bind(this))
   }
 
   start() {
@@ -96,14 +99,7 @@ class Loader {
       this.reloadingTime(1000)
     }
     else if (pageYOffset == 0 && !this.reloading && event.wheelDelta > 40) {
-      document.body.classList.add(classNames.isShuffling)
-
-      this.rows = 1
-      this.load({
-        type: 'shuffle'
-      })
-
-      this.reloadingTime(2000)
+      this.shuffleCards()
     }
 
   }
@@ -124,6 +120,17 @@ class Loader {
     ).then(
       () => this.stop(params)
     )
+  }
+
+  shuffleCards() {
+    document.body.classList.add(classNames.isShuffling)
+
+    this.rows = 1
+    this.load({
+      type: 'shuffle'
+    })
+
+    this.reloadingTime(2000)
   }
 
   loadData(cb, params) {
