@@ -9,15 +9,13 @@
     "newtab": "index.html"
   },
   "background": {
-    "scripts": ["background.js"]
   },
   "permissions": [
     "*://newwwness.co/*",
-    "*://use.typekit.net/*",
     "webRequest",
     "webRequestBlocking"
   ],
-  "content_security_policy": "script-src 'self' https://use.typekit.net; object-src 'self'",
+  "content_security_policy": "script-src 'self'; object-src 'self'",
   "manifest_version": 2,
   "author": "Aranja",
   "homepage_url": "http://newwwness.co"
