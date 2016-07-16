@@ -43,9 +43,9 @@ html
       meta(name="msapplication-TileImage", content="/mstile-144x144.png")
       meta(name="theme-color", content="#ffffff")
 
-    link(rel='stylesheet', href='css/main.css')
+    link(rel='stylesheet', href='/css/main.css')
     link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=PT+Serif|Source+Sans+Pro:200,600')
-    script(src="js/modernizr.js")
+    script(src="/js/modernizr.js")
   body(data-extension=extension)
     .Layout
 
@@ -65,10 +65,10 @@ html
         a.download(href="https://chrome.google.com/webstore/detail/newwwness/bgehdelljbcknhkackefjmceniacejel") Download Chrome Extension
 
     if prod
-      script(src="js/bundle.js")
+      script(src="/js/bundle.js")
     else
-      script(src="jspm_packages/system.js")
-      script(src="js/config.js")
+      script(src="/jspm_packages/system.js")
+      script(src="/js/config.js")
       script.
         System.import('js/app')
       script(src="//localhost:35729/livereload.js?snipver=1")
