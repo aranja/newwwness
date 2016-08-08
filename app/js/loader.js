@@ -5,7 +5,8 @@ import template from 'templates/end.jade!'
 
 const classNames = {
   isShuffling: 'is-shuffling',
-  isHidden: 'is-hidden'
+  isHidden: 'is-hidden',
+  isChrome: 'is-chrome'
 }
 
 class Loader {
@@ -34,6 +35,10 @@ class Loader {
     window.addEventListener('resize', this.setSize.bind(this));
 
     this.logo.addEventListener('click', this.shuffleCards.bind(this))
+
+    if (window.chrome) {
+      document.body.classList.add(classNames.isChrome)
+    }
   }
 
   start() {
