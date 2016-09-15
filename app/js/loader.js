@@ -4,7 +4,9 @@ import Event from './event'
 import template from 'templates/end.jade!'
 
 const classNames = {
-  isShuffling: 'is-shuffling'
+  isShuffling: 'is-shuffling',
+  isHidden: 'is-hidden',
+  isChrome: 'is-chrome'
 }
 
 class Loader {
@@ -33,6 +35,10 @@ class Loader {
     window.addEventListener('resize', this.setSize.bind(this));
 
     this.logo.addEventListener('click', this.shuffleCards.bind(this))
+
+    if (window.chrome) {
+      document.body.classList.add(classNames.isChrome)
+    }
   }
 
   start() {
@@ -83,6 +89,10 @@ class Loader {
       }
     }
 
+    if (pageYOffset > 10) {
+      this.hideCTA()
+    }
+
     if (pageYOffset > 5 + ((this.rowSize > 1 ? 370 : 125) * (this.rows - 1))) {
       this.load({
         type: 'normal',
@@ -124,6 +134,8 @@ class Loader {
 
   shuffleCards() {
     document.body.classList.add(classNames.isShuffling)
+
+    this.hideCTA()
 
     this.rows = 1
     this.load({
@@ -287,6 +299,10 @@ class Loader {
         }
       }
     }
+  }
+
+  hideCTA() {
+    document.getElementById('footer').classList.add(classNames.isHidden)
   }
 
   lookupMonth(index) {

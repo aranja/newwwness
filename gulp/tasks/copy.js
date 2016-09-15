@@ -1,32 +1,33 @@
 module.exports = function(gulp, gutil) {
-  gulp.task('copy', function() {
+  gulp.task('copy', function(cb) {
     var connect = require('gulp-connect');
     var prod = gutil.env.prod;
     var source = gulp.config.source;
     var target = gulp.config.target;
+    var merge = require('merge-stream');
 
-    gulp.src(source + '/*.html')
+    var copyHtml = gulp.src(source + '/*.html')
       .pipe(gulp.dest(target + '/'))
       .pipe(prod ? gutil.noop() : connect.reload());
-    gulp.src(source + '/img/**/*.ico')
+    var copyImages = gulp.src(source + '/img/**/*.ico')
       .pipe(gulp.dest(target + '/img/'))
       .pipe(prod ? gutil.noop() : connect.reload());
-    gulp.src(source + '/js/vendor/*.js')
+    var copyVendor = gulp.src(source + '/js/vendor/*.js')
       .pipe(gulp.dest(target + '/js/vendor/'))
       .pipe(prod ? gutil.noop() : connect.reload());
-    gulp.src(source + '/fonts/**')
+    var copyFonts = gulp.src(source + '/fonts/**')
       .pipe(gulp.dest(target + '/fonts/'))
       .pipe(prod ? gutil.noop() : connect.reload());
-    gulp.src(source + '/videos/**')
+    var copyVideos = gulp.src(source + '/videos/**')
       .pipe(gulp.dest(target + '/videos/'))
       .pipe(prod ? gutil.noop() : connect.reload());
 
     if (gutil.env.extension) {
-      gulp.src(source + '/extension/**')
+      var copyGuts = gulp.src(source + '/extension/**')
         .pipe(gulp.dest(target))
         .pipe(prod ? gutil.noop() : connect.reload());
     } else {
-      gulp.src(source + '/website/**')
+      var copyGuts = gulp.src(source + '/website/**')
         .pipe(gulp.dest(target))
         .pipe(prod ? gutil.noop() : connect.reload());
     }
@@ -41,5 +42,8 @@ module.exports = function(gulp, gutil) {
         .pipe(gulp.dest(target + '/templates/'))
         .pipe(prod ? gutil.noop() : connect.reload());
     }
+
+    return merge(copyHtml, copyImages, copyVendor, copyFonts, copyVideos, copyGuts);
+
   });
 };
