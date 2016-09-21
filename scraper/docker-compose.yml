@@ -1,0 +1,22 @@
+version: '2'
+
+services:
+  app:
+    build: .
+#    ports:
+#      - '8000:8000'
+    environment:
+      - DATABASE_URL=postgres://postgres@postgres/postgres
+      - TWITTER_CONSUMER_KEY=$TWITTER_CONSUMER_KEY
+      - TWITTER_CONSUMER_SECRET=$TWITTER_CONSUMER_SECRET
+    volumes:
+      - .:/code
+      - node_modules:/code/node_modules
+    links:
+      - postgres
+
+  postgres:
+    image: postgres
+
+volumes:
+  node_modules:
