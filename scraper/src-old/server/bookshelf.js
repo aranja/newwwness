@@ -2,12 +2,13 @@ import createKnex from 'knex'
 import createBookshelf from 'bookshelf'
 import knexConfig from './knexfile'
 
-const knex = createKnex(knexConfig)
+export const knex = createKnex(knexConfig)
 
 const bookshelf = createBookshelf(knex)
 
 export const Link = bookshelf.Model.extend({
   tableName: 'links',
+  hasTimestamps: true,
 
   tweets() {
     return this.hasMany(Tweet)
@@ -26,5 +27,13 @@ export const Link = bookshelf.Model.extend({
 export const Tweet = bookshelf.Model.extend({
   tableName: 'tweets',
 })
+
+export function queryHotLinks() {
+  return Link.query()
+    .join('tweets', 'tweets.link_id', 'links.id')
+    .select(knex.raw('links.url, links.domain, sum(hot_weight(weight, tweets.created_at)) as hotness'))
+    .groupBy('links.url', 'links.domain')
+    .orderBy('links.domain')
+}
 
 export default bookshelf
